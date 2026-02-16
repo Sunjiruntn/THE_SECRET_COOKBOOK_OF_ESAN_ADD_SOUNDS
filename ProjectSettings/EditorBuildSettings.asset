@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/KHONKAEN_SCENE/TutorialScene.unity
+    guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/KHONKAEN_SCENE/PumpkinGardenScene.unity
+    guid: abd158daa6643d246b2951234ad8e8af
+  - enabled: 1
+    path: Assets/Scenes/KHONKAEN_SCENE/KitchenScene.unity
+    guid: 3c5ce2fb73c722d42a29344ac02c06e4
+  - enabled: 1
+    path: Assets/Scenes/UDON_SCENE/RiceHarvestScene.unity
+    guid: 343e48182fc5703459564fbd1edd7e24
+  - enabled: 1
+    path: Assets/Scenes/UDON_SCENE/ThreshingScene.unity
+    guid: d8a813938fddc7949903af9da6af4ac4
+  - enabled: 1
+    path: Assets/Scenes/UDON_SCENE/DryingRiceScene.unity
+    guid: a716fd40121a8de4e886f22f2b6da02d
+  - enabled: 1
+    path: Assets/Scenes/UDON_SCENE/Kitchen.unity
+    guid: f0eb764929936d04aba43f7dcc3c7b76
+  - enabled: 1
+    path: Assets/Scenes/UDON_SCENE/BlackRiceScenes.unity
+    guid: d1e2d5ceb566f924c93508a8ffef3598
+  - enabled: 1
+    path: Assets/Scenes/UDON_SCENE/PoundScene.unity
+    guid: c232be4ece9954a49854427fe553d2d3
+  - enabled: 1
+    path: Assets/Scenes/Map/Submap_Khonkaen.unity
+    guid: a25e22981f0bf334da623d8e3f796218
+  - enabled: 1
+    path: Assets/Scenes/SelectHole.unity
+    guid: 95b083658ea04b4479d31529cbefc397
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 9a1bbfe418198184997ee4784e588876
+  - enabled: 1
+    path: Assets/Scenes/Closeup.unity
+    guid: 4869f142bfc15e24094ee4733fe13161
+  - enabled: 1
+    path: Assets/Scenes/CookingStage.unity
+    guid: 5d2f5e17734aef6418522f7217b32f85
+  - enabled: 1
+    path: Assets/Scenes/Map/MapSelect.unity
+    guid: 088db0dab0d79e744bf3b438ce03000e
+  - enabled: 1
+    path: Assets/Scenes/Map/SubMap_Mukda.unity
+    guid: 0a5a86093a7f8164191035004e9fd82c
+  - enabled: 1
+    path: Assets/Scenes/Map/SubMap_RoiEt.unity
+    guid: 9923c2d03514dd44bbdc42f0190df7eb
+  - enabled: 1
+    path: Assets/Scenes/Map/SubMap_Surin.unity
+    guid: 13c4d9976be3a464bb102788c1a27547
+  - enabled: 1
+    path: Assets/Scenes/Map/SubMap_Udon.unity
+    guid: 4283a39974c5d33499b5b947995b88fa
+  - enabled: 1
+    path: Assets/Scenes/Surin/CookingStageSurin.unity
+    guid: 6e6ebc6c18f7848469bf88011f2bbf9a
+  - enabled: 1
+    path: Assets/Scenes/Surin/MiniGame1Surin.unity
+    guid: 247d047d84581e54da036e6dd00b4818
+  - enabled: 1
+    path: Assets/Scenes/Surin/MiniGame2Surin.unity
+    guid: 2c354c8363fa6ec4c89efd719530b5ca
+  - enabled: 1
+    path: Assets/Scenes/Surin/MiniGame3Surin.unity
+    guid: cafb9e0eba4b227428405cc91d716324
+  - enabled: 1
+    path: Assets/Scenes/Surin/openSurin.unity
+    guid: 5e11f5ab05d8efe4a97261b4ec7273fc
+  - enabled: 1
+    path: Assets/Scenes/mukda/MiniGame1/MiniGame1Mukda.unity
+    guid: c979c7e2819c3264099276b124da38b2
+  - enabled: 1
+    path: Assets/Scenes/mukda/MIniGame2Mukda.unity
+    guid: 3a7695a4d120fa347852d12ac4d58175
+  - enabled: 1
+    path: Assets/Scenes/mukda/Mukdahan_Cooking.unity
+    guid: 7aa6f2e22c47217458665cf6ae8294c3
+  m_configObjects:
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  m_UseUCBPForAssetBundles: 0
