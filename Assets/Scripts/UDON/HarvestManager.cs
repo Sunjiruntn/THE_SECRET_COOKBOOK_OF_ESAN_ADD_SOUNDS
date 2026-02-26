@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class HarvestManager : MonoBehaviour
 {
     [Header("Save Data Settings")]
-    public int provinceIndex = 4; // จังหวัดอุดรธานี Index = 4
+    public int provinceIndex = 2; // จังหวัดอุดรธานี Index = 4
     public string nextSceneName = "ThreshingScene";
     [Header("UI Windows")]
     public TMP_Text scoreText;

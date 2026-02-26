@@ -28,7 +28,7 @@ public class GraterController : MonoBehaviour
     public GameObject winPanel;
     public Button nextLevelButton;
     public string nextSceneName = "MiniGame3Surin";
-    public int provinceIndex = 2;
+    public int provinceIndex = 4;
 
     [Header("UI Status")]
     public TextMeshProUGUI statusText;

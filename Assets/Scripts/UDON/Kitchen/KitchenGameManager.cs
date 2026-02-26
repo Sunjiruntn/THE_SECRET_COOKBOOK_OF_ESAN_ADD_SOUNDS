@@ -7,7 +7,7 @@ using TMPro; // เพิ่มถ้าใช้ TextMeshPro
 public class KitchenGameManager : MonoBehaviour
 {
     [Header("Save Data Settings")]
-    public int provinceIndex = 4; // จังหวัดอุดรธานี Index = 4
+    public int provinceIndex = 2; // จังหวัดอุดรธานี Index = 4
     public string nextSceneName = "PoundScene";
     
     [Header("UI Settings - Gauge & Progress")]

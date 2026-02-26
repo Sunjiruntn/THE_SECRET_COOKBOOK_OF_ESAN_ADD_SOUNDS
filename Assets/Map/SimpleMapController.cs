@@ -35,20 +35,20 @@ public class SimpleMapController : MonoBehaviour
 
     public void GoToProvince2()
     {
-        SceneManager.LoadScene("SubMap_Mukda");
+        SceneManager.LoadScene("SubMap_Khonkaen");
     }
     public void GoToProvince3()
     {
-        SceneManager.LoadScene("SubMap_Surin");
+        SceneManager.LoadScene("SubMap_Udon");
     }
 
     public void GoToProvince4()
     {
-        SceneManager.LoadScene("SubMap_Khonkaen");
+        SceneManager.LoadScene("SubMap_Mukda");
     }
     public void GoToProvince5()
     {
-        SceneManager.LoadScene("SubMap_Udon");
+        SceneManager.LoadScene("SubMap_Surin");
     }
 
     public void GoToBackMainMenu()

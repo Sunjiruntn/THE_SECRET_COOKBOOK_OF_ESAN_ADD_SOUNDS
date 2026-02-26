@@ -5,7 +5,7 @@ using System.Collections; // ✅ จำเป็นต้องมีเพื�
 
 public class GameManager : MonoBehaviour
 {
-    public int provinceIndex = 1;
+    public int provinceIndex = 3;
     public string nextSceneName = "Mukdahan_Cooking";
     public static bool isRestart = false;
 
