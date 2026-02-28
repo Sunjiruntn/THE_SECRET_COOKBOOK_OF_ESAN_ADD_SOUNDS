@@ -21,11 +21,11 @@ public enum IngredientID
 // =========================================================================
 // [2] CLASS: Ingredient Component
 // =========================================================================
-public class Ingredient : MonoBehaviour 
+public class Ingredient : MonoBehaviour
 {
     [Header("Ingredient Setup")]
     public IngredientID ingredientId;
-    public CookingInstructorManager manager; 
+    public CookingInstructorManager manager;
 
     [Header("Interaction Flags")]
     public bool isDraggable = false;
@@ -33,8 +33,8 @@ public class Ingredient : MonoBehaviour
 
     // ตำแหน่งเริ่มต้นสำหรับ Reset
     private Vector3 originalPosition;
-    public int originalSortingOrder; 
-    
+    public int originalSortingOrder;
+
     void Start()
     {
         originalPosition = transform.position;
@@ -43,10 +43,10 @@ public class Ingredient : MonoBehaviour
         {
             originalSortingOrder = renderer.sortingOrder;
         }
-        
+
         if (manager == null)
         {
-             manager = FindObjectOfType<CookingInstructorManager>();
+            manager = FindObjectOfType<CookingInstructorManager>();
         }
     }
 
@@ -58,7 +58,7 @@ public class Ingredient : MonoBehaviour
             GetComponent<Renderer>().sortingOrder = originalSortingOrder;
         }
     }
-    
+
     // =========================================================================
     // [3] DRAG & DROP LOGIC
     // =========================================================================
@@ -66,12 +66,12 @@ public class Ingredient : MonoBehaviour
     {
         if (manager == null || manager.IsGameOver() || !isDraggable) return;
 
-        manager.SetAllIngredientsInteraction(false, false); 
-        isDraggable = true; 
-        
+        manager.SetAllIngredientsInteraction(false, false);
+        isDraggable = true;
+
         if (GetComponent<Renderer>() != null)
         {
-            GetComponent<Renderer>().sortingOrder = 10; 
+            GetComponent<Renderer>().sortingOrder = 10;
         }
     }
 
@@ -87,16 +87,16 @@ public class Ingredient : MonoBehaviour
     private void OnMouseUp()
     {
         if (manager == null || manager.IsGameOver() || !isDraggable) return;
-        
+
         isDraggable = false;
-        
+
         if (GetComponent<Renderer>() != null)
         {
             GetComponent<Renderer>().sortingOrder = originalSortingOrder;
         }
-        
+
         Collider2D targetCollider = FindTargetCollider();
-        
+
         if (targetCollider != null)
         {
             Ingredient targetIngredient = targetCollider.GetComponent<Ingredient>();
@@ -110,7 +110,7 @@ public class Ingredient : MonoBehaviour
             // ไม่ต้อง enable กลับที่นี่เพราะปุ่ม "ลองใหม่" จะเรียก ResetStepForRetry
         }
     }
-    
+
     private Collider2D FindTargetCollider()
     {
         if (manager != null && manager.mixingBowlTarget != null && manager.mixingBowlTarget.OverlapPoint(transform.position))
@@ -127,7 +127,7 @@ public class Ingredient : MonoBehaviour
     // =========================================================================
     // [4] CLICK LOGIC (สำหรับการคลิก)
     // =========================================================================
-    
+
     private void OnMouseUpAsButton()
     {
         if (manager == null || manager.IsGameOver() || !isClickable) return;
@@ -140,9 +140,9 @@ public class Ingredient : MonoBehaviour
             manager.HandleClick(this.ingredientId);
             return;
         }
-        
-        if (ingredientId == IngredientID.MIXING_BOWL || 
-            ingredientId == IngredientID.PUMPKIN_STEAMED_FLOAT || 
+
+        if (ingredientId == IngredientID.MIXING_BOWL ||
+            ingredientId == IngredientID.PUMPKIN_STEAMED_FLOAT ||
             ingredientId == IngredientID.COCONUT_MILK ||
             ingredientId == IngredientID.SUGAR_SWEETENER ||
             ingredientId == IngredientID.SALT ||

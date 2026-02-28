@@ -30,7 +30,7 @@ public class CatHandController : MonoBehaviour
     public GameObject winPanel;
     public Button nextLevelButton;
     public string nextSceneName = "CookingStageSurin";
-    public int provinceIndex = 2;
+    public int provinceIndex = 4;
 
     [Header("--- Dialogue System (ระบบบทพูด) ---")]
     public GameObject dialoguePanel; 

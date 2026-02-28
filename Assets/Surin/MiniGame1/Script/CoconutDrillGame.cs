@@ -8,7 +8,7 @@ using System.Collections; // ✅ เพิ่มเพื่อใช้ Corouti
 public class CoconutDrillGame : MonoBehaviour
 {
     [Header("Level Settings")]
-    public int provinceIndex = 2; 
+    public int provinceIndex = 4; 
     public string nextSceneName = "MiniGame2Surin";
 
     // ==========================================

@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class WashingGameManager : MonoBehaviour
 {
     [Header("Save Data Settings")]
-    public int provinceIndex = 4; // จังหวัดอุดรธานี Index = 4
+    public int provinceIndex = 2; // จังหวัดอุดรธานี Index = 4
     public string nextSceneName = "Kitchen";
     [Header("Video & UI Settings")]
     public VideoPlayer videoPlayer;

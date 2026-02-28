@@ -12,7 +12,7 @@ public class EndingSystem : MonoBehaviour
     public GameObject dialoguePanel;
 
     [Header("Game Data Settings")]
-    public int provinceIndex = 1;
+    public int provinceIndex = 3;
     public string nextSceneName = "MiniGame1Surin";
 
     [Header("Dialogue List")]
@@ -21,8 +21,11 @@ public class EndingSystem : MonoBehaviour
     public GameObject ingreGroup;
     private int index = 0;
 
+    public TextMeshProUGUI statusText;
+
     void OnEnable()
     {
+        statusText.gameObject.SetActive(false);
         if (!canEndGame)
         {
             this.gameObject.SetActive(false);
@@ -61,7 +64,11 @@ public class EndingSystem : MonoBehaviour
     void EndLevelAndSave()
     {
         Debug.Log("Outro จบแล้ว! กำลังบันทึกและปิดทุกอย่าง...");
-
+        if (TestGameManager.Instance != null && TestGameManager.Instance.isTestMode)
+        {
+            TestGameManager.Instance.FinishExam();
+            return; // หยุดการทำงานของ WinPanel ด้านล่างทั้งหมด
+        }
         // --- 1. สั่งปิด Ingre ทิ้งเป็นอย่างแรกเลย! (สำคัญมาก) ---
         if (ingreGroup != null)
         {

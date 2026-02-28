@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video; 
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class KhaoMaoManager : MonoBehaviour
 {
@@ -39,9 +40,18 @@ public class KhaoMaoManager : MonoBehaviour
     public GameObject tutorialTextUI;    // UI Text แนะนำ (แสดง 5 วินาทีแรก)
     public AudioSource voiceSource;      // สำหรับเสียงแนะนำด่านและเสียงตำ (SFX)
     public AudioSource musicSource;      // สำหรับเพลง BGM (Loop)
-    public AudioClip introVoiceClip;     // ไฟล์เสียงยายแนะนำด่าน
+    public AudioClip introVoiceClip;     // ไฟล์เสียงยายนแนะนำด่าน
     public AudioClip poundSoundClip;     // ไฟล์เสียงตอนตำข้าว (Spacebar)
     public AudioClip backgroundMusic;    // ไฟล์เพลงประกอบด่าน
+
+    // ----------------------------
+    //   เพิ่มระบบ Success Panel
+    // ----------------------------
+    [Header("--- Success Panel Settings ---")]
+    public GameObject successPanel;          // UI แสดงความยินดี
+    public Button successNextButton;         // ปุ่มถัดไป
+    public string nextSceneName = "NextScene";  // ซีนถัดไป
+    // ----------------------------
 
     private bool movingRight = true;
     private bool canHit = false;
@@ -60,11 +70,23 @@ public class KhaoMaoManager : MonoBehaviour
         
         // เริ่มลำดับการเข้าด่าน (Tutorial -> Voice -> Music -> Game)
         StartCoroutine(StartSequenceRoutine());
+
+        // ----------------------------
+        //   ส่วนที่เพิ่มสำหรับ Success Panel
+        // ----------------------------
+        if (successPanel != null)
+            successPanel.SetActive(false);
+
+        if (successNextButton != null)
+            successNextButton.onClick.AddListener(OnSuccessNextButtonClicked);
+
+        if (cutscenePlayer != null)
+            cutscenePlayer.loopPointReached += OnCutsceneFinished;
+        // ----------------------------
     }
 
     IEnumerator StartSequenceRoutine()
     {
-        // 1. แสดง Text แนะนำ 5 วินาที
         if (tutorialTextUI != null)
         {
             tutorialTextUI.SetActive(true);
@@ -72,15 +94,12 @@ public class KhaoMaoManager : MonoBehaviour
             tutorialTextUI.SetActive(false);
         }
 
-        // 2. เล่นเสียงแนะนำด่าน (เสียงยาย)
         if (voiceSource != null && introVoiceClip != null)
         {
             voiceSource.PlayOneShot(introVoiceClip);
-            // รอจนกว่าเสียงแนะนำจะจบลง
             yield return new WaitForSeconds(introVoiceClip.length);
         }
 
-        // 3. เริ่มเล่นเพลง BGM หลังจากเสียงแนะนำจบ
         if (musicSource != null && backgroundMusic != null)
         {
             musicSource.clip = backgroundMusic;
@@ -88,7 +107,6 @@ public class KhaoMaoManager : MonoBehaviour
             musicSource.Play();
         }
 
-        // 4. ปลดล็อกเกมและเริ่มลูปการเล่น
         isGameOver = false;
         StartCoroutine(SkillCheckRoutine()); 
     }
@@ -101,7 +119,6 @@ public class KhaoMaoManager : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                // เล่นเสียงตำข้าวทุกครั้งที่กด Spacebar
                 if (voiceSource != null && poundSoundClip != null)
                 {
                     voiceSource.PlayOneShot(poundSoundClip);
@@ -125,7 +142,6 @@ public class KhaoMaoManager : MonoBehaviour
 
     IEnumerator SkillCheckRoutine()
     {
-        // เล่นจนกว่าจะครบ 5 เซต
         while (currentSet < 5)
         {
             yield return new WaitForSeconds(appearanceInterval);
@@ -148,7 +164,6 @@ public class KhaoMaoManager : MonoBehaviour
             canHit = false;
         }
 
-        // เมื่อครบ 5 เซต ให้จบเกมและเล่นวิดีโอ
         FinishGame();
     }
 
@@ -195,7 +210,6 @@ public class KhaoMaoManager : MonoBehaviour
         if (mortarRiceRenderer != null && mortarRiceSprites.Length > index)
             mortarRiceRenderer.sprite = mortarRiceSprites[index];
 
-        // เพิ่มความเร็วเมื่อขึ้นเซตใหม่
         if (currentSet > 0 && currentSet < 5)
         {
             moveSpeed += speedIncrement;
@@ -208,7 +222,6 @@ public class KhaoMaoManager : MonoBehaviour
         canHit = false;
         skillCheckGroup.SetActive(false);
 
-        // หยุดเพลงเมื่อจบเกมเพื่อเตรียมเล่นเสียงวิดีโอ
         if (musicSource != null) musicSource.Stop();
 
         if (cutscenePlayer != null)
@@ -246,5 +259,20 @@ public class KhaoMaoManager : MonoBehaviour
         riceTransform.localScale = new Vector3(1.3f, 0.7f, 1f);
         yield return new WaitForSeconds(0.1f);
         riceTransform.localScale = originalScale;
+    }
+
+    // ----------------------------
+    //        SUCCESS PANEL
+    // ----------------------------
+
+    void OnCutsceneFinished(VideoPlayer vp)
+    {
+        if (successPanel != null)
+            successPanel.SetActive(true);
+    }
+
+    public void OnSuccessNextButtonClicked()
+    {
+        SceneManager.LoadScene(nextSceneName);
     }
 }

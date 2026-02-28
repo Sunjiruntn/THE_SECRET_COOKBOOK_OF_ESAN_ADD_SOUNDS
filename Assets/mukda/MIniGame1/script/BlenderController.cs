@@ -11,7 +11,7 @@ public class BlenderController : MonoBehaviour
     public GameObject winPanel;       
     public Button nextLevelButton;    
     public string nextSceneName = "Mukdahan_MiniGame2"; 
-    public int provinceIndex = 1;
+    public int provinceIndex = 3;
 
     // ==========================================================
     // NEW: AUDIO SYSTEM (ส่วนที่เพิ่มเข้าไป)

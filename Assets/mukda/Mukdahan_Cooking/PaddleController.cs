@@ -111,41 +111,48 @@ public class PaddleController : MonoBehaviour
         }
     }
 
+
     void FinishMixing()
     {
         isMixed = true;
         waitingForClick = true;
         paddleVisual.SetActive(false); // ไม้พายหายไปเมื่อผสมเสร็จ
+
+        // ✅ สั่งให้ IngredientManager เปลี่ยนข้อความเป็นประโยคที่ต้องการ
+        if (ingManager != null)
+        {
+            ingManager.StirMixture(); // เรียกใช้ฟังก์ชันที่เราเตรียมไว้
+        }
     }
 
+    // ==========================================
+    // ฟังก์ชันนี้ถูกเรียกเมื่อ "คลิกที่ชามเพื่อเท"
+    // ==========================================
     void CheckClickOnBowl()
     {
-        // 1. แปลงตำแหน่งเมาส์เป็นพิกัดโลก
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
-
-        // 2. ยิง Raycast
         RaycastHit2D hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
 
-        // --- ส่วนเช็ก Error (ดูใน Console) ---
         if (hit.collider != null)
         {
-            Debug.Log("คลิกโดนวัตถุชื่อ: " + hit.collider.gameObject.name);
-
-            // เช็กว่าวัตถุที่คลิกโดน คืออันเดียวกับที่เราตั้งเป็น currentContainer ไหม
             if (hit.collider.gameObject == currentContainer.gameObject)
             {
                 waitingForClick = false;
-                FindObjectOfType<PouringSystem>().StartPour();
+
+                // เริ่มเท
+                PouringSystem pouringSystem = FindObjectOfType<PouringSystem>();
+                if (pouringSystem != null)
+                {
+                    pouringSystem.StartPour();
+                }
+
+                // ✅ สั่งให้ IngredientManager รู้ว่าเทแล้ว (เพื่อปิดข้อความฝั่งชาม ส่งไม้ให้ฝั่งหม้อ)
+                if (ingManager != null)
+                {
+                    ingManager.PourIntoPot();
+                }
             }
-            else
-            {
-                Debug.Log("คลิกโดนอย่างอื่นที่ไม่ใช่ชามผสมจ้ะ");
-            }
-        }
-        else
-        {
-            Debug.Log("คลิกไม่โดน Collider อะไรเลยจ้ะ");
         }
     }
 }

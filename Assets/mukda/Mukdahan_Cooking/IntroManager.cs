@@ -11,10 +11,10 @@ public class IntroManager : MonoBehaviour
     public IngredientManager ingredientManager;
 
     [Header("--- Audio Settings ---")]
-    public AudioSource bgmSource;        
-    public AudioSource sfxSource;        
-    public AudioSource voiceSource;      
-    
+    public AudioSource bgmSource;
+    public AudioSource sfxSource;
+    public AudioSource voiceSource;
+
     [Space(10)]
     public AudioClip bgmClip;            // เพลงพื้นหลัง
     public AudioClip clickSfx;           // เสียงปุ่มกด
@@ -22,15 +22,23 @@ public class IntroManager : MonoBehaviour
 
     void Start()
     {
+        if (TestGameManager.Instance != null && TestGameManager.Instance.isTestMode)
+        {
+            // โหมดสอบ ข้าม Intro ปิด Panel 
+            introPanel.SetActive(false);
+            PlayBGM(); 
+            if (ingredientManager != null) ingredientManager.StartMixingPhase();
+            return; 
+        }
         currentIndex = 0;
         introText.text = introLines[currentIndex];
-        
+
         // 1. เริ่มเล่นเสียงแนะนำทันทีที่เปิดเกม
         if (voiceSource != null && introVoice != null)
         {
             voiceSource.clip = introVoice;
             voiceSource.Play();
-            
+
             // 2. เริ่มเปิดเพลงพื้นหลังหลังจากเสียงแนะนำจบ
             StartCoroutine(WaitAndPlayBGM());
         }
@@ -45,7 +53,7 @@ public class IntroManager : MonoBehaviour
     {
         // รอจนกว่าเสียงพากย์จะจบ
         yield return new WaitForSeconds(introVoice.length);
-        
+
         PlayBGM();
     }
 

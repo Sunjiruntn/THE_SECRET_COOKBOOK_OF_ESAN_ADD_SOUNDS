@@ -5,7 +5,7 @@ using System.Collections;
 
 public class PumpkinHarvester : MonoBehaviour
 {
-    private int provinceIndex = 3;
+    private int provinceIndex = 1;
     public string nextSceneName = "KitchenScene";
     // ต้องลาก GameObject ของ UI Image ที่สร้างไว้มาใส่ใน Inspector ของฟักทองทุกชิ้น
     public GameObject resultImageSuccess; // ลาก ResultImage_Success มาใส่
