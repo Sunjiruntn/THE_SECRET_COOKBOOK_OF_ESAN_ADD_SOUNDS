@@ -86,6 +86,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/mukda/Mukdahan_Cooking.unity
     guid: 7aa6f2e22c47217458665cf6ae8294c3
+  - enabled: 1
+    path: Assets/TestScene/ResultScene.unity
+    guid: b533c0ced171dd54c83814001adc89bd
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -1,22 +1,22 @@
 Using pre-set license
 Built from '6000.1/staging' branch; Version is '6000.1.11f1 (9b156bbbd4df) revision 10163563'; Using compiler version '194234433'; Build Type 'Release'
-OS: 'Windows 10  (10.0.19045) 64bit Professional' Language: 'en' Physical Memory: 7530 MB
+OS: 'Windows 11  (10.0.26200) 64bit CoreSingleLanguage' Language: 'en' Physical Memory: 16163 MB
 BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 1
-Date: 2026-02-15T07:53:45Z
+Date: 2026-03-12T17:06:54Z
 
 COMMAND LINE ARGUMENTS:
-F:\pj\6000.1.11f1\Editor\Unity.exe
+C:\Program Files\Unity\Hub\Editor\6000.1.11f1\Editor\Unity.exe
 -adb2
 -batchMode
 -noUpm
 -name
 AssetImportWorker1
 -projectPath
-F:/ใส่เสียง3ด่านที่อัพให้เฟิน/the secret cookbook of siam
+C:/project/THE_SECRET_COOKBOOK_OF_ESAN_ADD_SOUNDS
 -logFile
 Logs/AssetImportWorker1.log
 -srvPort
-61363
+52941
 -job-worker-count
 5
 -background-job-worker-count
@@ -25,8 +25,8 @@ Logs/AssetImportWorker1.log
 1
 -name
 AssetImport
-Successfully changed project path to: F:/ใส่เสียง3ด่านที่อัพให้เฟิน/the secret cookbook of siam
-F:/ใส่เสียง3ด่านที่อัพให้เฟิน/the secret cookbook of siam
+Successfully changed project path to: C:/project/THE_SECRET_COOKBOOK_OF_ESAN_ADD_SOUNDS
+C:/project/THE_SECRET_COOKBOOK_OF_ESAN_ADD_SOUNDS
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
     "memorysetup-allocator-temp-initial-block-size-main=262144"
     "memorysetup-allocator-temp-initial-block-size-worker=262144"
@@ -62,14 +62,12 @@ F:/ใส่เสียง3ด่านที่อัพให้เฟิน/
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Player connection [27136]  Target information:
+Player connection [18372]  Target information:
 
-Player connection [27136]  * "[IP] 172.29.32.1 [Port] 0 [Flags] 2 [Guid] 3797344425 [EditorId] 3797344425 [Version] 1048832 [Id] WindowsEditor(7,RAZER-20230304U) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+Player connection [18372]  * "[IP] 172.20.10.6 [Port] 0 [Flags] 2 [Guid] 1070931233 [EditorId] 1070931233 [Version] 1048832 [Id] WindowsEditor(7,littlepenguin) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
 
-Player connection [27136]  * "[IP] 169.254.120.56 [Port] 0 [Flags] 2 [Guid] 3797344425 [EditorId] 3797344425 [Version] 1048832 [Id] WindowsEditor(7,RAZER-20230304U) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
-
-Player connection [27136] Host joined multi-casting on [225.0.0.222:54997]...
-Player connection [27136] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [18372] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [18372] Host joined alternative multi-casting on [225.0.0.222:34997]...
 JobSystem: Creating JobQueue using job-worker-count value 5
 Input System module state changed to: Initialized.
 [Physics::Module] Initialized fallback backend.
@@ -81,129 +79,191 @@ Library Redirect Path: Library/
 [Physics::Module] SDK Version: 4.1.2
 [Physics::Module] Integration Version: 1.0.0
 [Physics::Module] Threading Mode: Multi-Threaded
-Refreshing native plugins compatible for Editor in 19.60 ms, found 4 plugins.
+Refreshing native plugins compatible for Editor in 10.32 ms, found 4 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 6000.1.11f1 (9b156bbbd4df)
-[Subsystems] Discovering subsystems at path F:/pj/6000.1.11f1/Editor/Data/Resources/UnitySubsystems
-[Subsystems] Discovering subsystems at path F:/ใส่เสียง3ด่านที่อัพให้เฟิน/the secret cookbook of siam/Assets
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.1.11f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/project/THE_SECRET_COOKBOOK_OF_ESAN_ADD_SOUNDS/Assets
 GfxDevice: creating device client; kGfxThreadingModeNonThreaded
 Direct3D:
     Version:         Direct3D 12 [level 12.1]
-    Renderer:        AMD Radeon(TM) Graphics (ID=0x164c)
-    Vendor:          ATI
-    VRAM:            3765 MB
-    App VRAM Budget: 3835 MB
-    Driver:          27.20.21030.8001
-    Unified Memory Architecture
+    Renderer:        NVIDIA GeForce RTX 3050 Laptop GPU (ID=0x25a2)
+    Vendor:          NVIDIA
+    VRAM:            3964 MB
+    App VRAM Budget: 3369 MB
+    Driver:          31.0.15.5161
 Initialize mono
-Mono path[0] = 'F:/pj/6000.1.11f1/Editor/Data/Managed'
-Mono path[1] = 'F:/pj/6000.1.11f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
-Mono config path = 'F:/pj/6000.1.11f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56884
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.1.11f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.1.11f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.1.11f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56252
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
-Register platform support module: F:/pj/6000.1.11f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.006437 seconds.
-- Loaded All Assemblies, in  1.139 seconds
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.1.11f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.1.11f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.1.11f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
+Registered in 0.012664 seconds.
+- Loaded All Assemblies, in  1.019 seconds
+Native extension for Android target not found
+Android Extension - Scanning For ADB Devices 890 ms
 Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.801 seconds
-Domain Reload Profiling: 1940ms
-	BeginReloadAssembly (454ms)
+- Finished resetting the current domain, in  1.981 seconds
+Domain Reload Profiling: 2996ms
+	BeginReloadAssembly (404ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (0ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (3ms)
-	RebuildCommonClasses (100ms)
-	RebuildNativeTypeToScriptingClass (36ms)
-	initialDomainReloadingComplete (127ms)
-	LoadAllAssembliesAndSetupDomain (421ms)
-		LoadAssemblies (449ms)
+		CreateAndSetChildDomain (2ms)
+	RebuildCommonClasses (93ms)
+	RebuildNativeTypeToScriptingClass (23ms)
+	initialDomainReloadingComplete (115ms)
+	LoadAllAssembliesAndSetupDomain (379ms)
+		LoadAssemblies (399ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (413ms)
-			TypeCache.Refresh (410ms)
-				TypeCache.ScanAssembly (377ms)
+		AnalyzeDomain (370ms)
+			TypeCache.Refresh (367ms)
+				TypeCache.ScanAssembly (339ms)
 			BuildScriptInfoCaches (0ms)
 			ResolveRequiredComponents (1ms)
-	FinalizeReload (801ms)
+	FinalizeReload (1981ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (721ms)
+		SetupLoadedEditorAssemblies (1919ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (113ms)
-			SetLoadedEditorAssemblies (8ms)
-			BeforeProcessingInitializeOnLoad (143ms)
-			ProcessInitializeOnLoadAttributes (319ms)
-			ProcessInitializeOnLoadMethodAttributes (139ms)
+			InitializePlatformSupportModulesInManaged (1043ms)
+			SetLoadedEditorAssemblies (11ms)
+			BeforeProcessingInitializeOnLoad (190ms)
+			ProcessInitializeOnLoadAttributes (523ms)
+			ProcessInitializeOnLoadMethodAttributes (150ms)
 			AfterProcessingInitializeOnLoad (0ms)
-			EditorAssembliesLoaded (1ms)
+			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
 		AwakeInstancesAfterBackupRestoration (0ms)
 ========================================================================
 Worker process is ready to serve import requests
 Import Worker Mode flag is 0x00
 Begin MonoManager ReloadAssembly
-- Loaded All Assemblies, in  2.351 seconds
-Refreshing native plugins compatible for Editor in 4.14 ms, found 4 plugins.
+- Loaded All Assemblies, in  1.904 seconds
+Refreshing native plugins compatible for Editor in 54.85 ms, found 4 plugins.
+Native extension for Android target not found
 Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  3.738 seconds
-Domain Reload Profiling: 6087ms
-	BeginReloadAssembly (389ms)
+- Finished resetting the current domain, in  2.631 seconds
+Domain Reload Profiling: 4521ms
+	BeginReloadAssembly (353ms)
 		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (16ms)
+		DisableScriptedObjects (9ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (61ms)
-	RebuildCommonClasses (94ms)
-	RebuildNativeTypeToScriptingClass (27ms)
-	initialDomainReloadingComplete (75ms)
-	LoadAllAssembliesAndSetupDomain (1760ms)
-		LoadAssemblies (1013ms)
+		CreateAndSetChildDomain (58ms)
+	RebuildCommonClasses (68ms)
+	RebuildNativeTypeToScriptingClass (18ms)
+	initialDomainReloadingComplete (78ms)
+	LoadAllAssembliesAndSetupDomain (1371ms)
+		LoadAssemblies (982ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (967ms)
-			TypeCache.Refresh (710ms)
-				TypeCache.ScanAssembly (669ms)
-			BuildScriptInfoCaches (212ms)
-			ResolveRequiredComponents (36ms)
-	FinalizeReload (3742ms)
+		AnalyzeDomain (612ms)
+			TypeCache.Refresh (426ms)
+				TypeCache.ScanAssembly (383ms)
+			BuildScriptInfoCaches (146ms)
+			ResolveRequiredComponents (31ms)
+	FinalizeReload (2632ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (3206ms)
+		SetupLoadedEditorAssemblies (2204ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (4ms)
-			SetLoadedEditorAssemblies (11ms)
-			BeforeProcessingInitializeOnLoad (399ms)
-			ProcessInitializeOnLoadAttributes (2270ms)
-			ProcessInitializeOnLoadMethodAttributes (514ms)
-			AfterProcessingInitializeOnLoad (6ms)
-			EditorAssembliesLoaded (2ms)
+			InitializePlatformSupportModulesInManaged (21ms)
+			SetLoadedEditorAssemblies (9ms)
+			BeforeProcessingInitializeOnLoad (417ms)
+			ProcessInitializeOnLoadAttributes (1467ms)
+			ProcessInitializeOnLoadMethodAttributes (272ms)
+			AfterProcessingInitializeOnLoad (17ms)
+			EditorAssembliesLoaded (1ms)
 		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (18ms)
+		AwakeInstancesAfterBackupRestoration (20ms)
 Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
-Refreshing native plugins compatible for Editor in 28.21 ms, found 4 plugins.
+Refreshing native plugins compatible for Editor in 5.07 ms, found 4 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 231 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 6774 unused Assets / (3.7 MB). Loaded Objects now: 7507.
-Memory consumption went from 177.5 MB to 173.8 MB.
-Total: 25.308600 ms (FindLiveObjects: 2.821700 ms CreateObjectMapping: 2.120800 ms MarkObjects: 13.896400 ms  DeleteObjects: 6.464700 ms)
+Unloading 6776 unused Assets / (4.5 MB). Loaded Objects now: 7512.
+Memory consumption went from 175.1 MB to 170.7 MB.
+Total: 22.361600 ms (FindLiveObjects: 1.633100 ms CreateObjectMapping: 2.848300 ms MarkObjects: 11.284700 ms  DeleteObjects: 6.593000 ms)
 
 ========================================================================
 Received Import Request.
-  Time since last request: 280502.709639 seconds.
-  path: Assets/Scenes/UDON_SCENE/RiceHarvestScene.unity
-  artifactKey: Guid(343e48182fc5703459564fbd1edd7e24) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scenes/UDON_SCENE/RiceHarvestScene.unity using Guid(343e48182fc5703459564fbd1edd7e24) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '00ea2ecf815ace305eb82f6de2139d85') in 0.0283527 seconds
+  Time since last request: 688596.307733 seconds.
+  path: Assets/Surin/open/Grandma1.png
+  artifactKey: Guid(929c6f193904228458a7acd42f0c3d02) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Surin/open/Grandma1.png using Guid(929c6f193904228458a7acd42f0c3d02) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'ea2bd4e1f0e9f2f1831739d297aba188') in 0.2066379 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000061 seconds.
+  path: Assets/Surin/MiniiGame3/มะพร้าว 2.png
+  artifactKey: Guid(301ece9824fdb4a42914693cae0c5507) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Surin/MiniiGame3/มะพร้าว 2.png using Guid(301ece9824fdb4a42914693cae0c5507) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '79a4bafd6251dde72ead890969c84e15') in 0.0573016 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 4
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000076 seconds.
+  path: Assets/Surin/MiniiGame3/เส้น 3.png
+  artifactKey: Guid(168c7c06001e51c46b635577fd92009c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Surin/MiniiGame3/เส้น 3.png using Guid(168c7c06001e51c46b635577fd92009c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '700c9189b90cf8ccae6cff67d5cb6752') in 0.0494294 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000045 seconds.
+  path: Assets/Surin/MiniiGame3/เงาถาด.png
+  artifactKey: Guid(1d49f11051a503645b96f20610f6c3d0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Surin/MiniiGame3/เงาถาด.png using Guid(1d49f11051a503645b96f20610f6c3d0) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '05b01798e0c996838e301884f85e7e4b') in 0.0485916 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000038 seconds.
+  path: Assets/Surin/MiniiGame3
+  artifactKey: Guid(04c6b1a0ea3e63e479742a3fd366af3c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Surin/MiniiGame3 using Guid(04c6b1a0ea3e63e479742a3fd366af3c) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '2fb71471d87c99c669cabb5feff9f0f9') in 0.0017988 seconds
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000025 seconds.
-  path: Assets/Scenes/UDON_SCENE/ThreshingScene.unity
-  artifactKey: Guid(d8a813938fddc7949903af9da6af4ac4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scenes/UDON_SCENE/ThreshingScene.unity using Guid(d8a813938fddc7949903af9da6af4ac4) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '439689dee20ac3d3c325601e43e08a76') in 0.0008287 seconds
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+  Time since last request: 0.000058 seconds.
+  path: Assets/Surin/open/ปาก2.png
+  artifactKey: Guid(5c6f13f0e77434d42b0744284f0da160) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Surin/open/ปาก2.png using Guid(5c6f13f0e77434d42b0744284f0da160) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '1bafce8fda83aee16036e0e71341aece') in 0.0375097 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/Surin/MiniiGame3/เส้น 5.png
+  artifactKey: Guid(c68d4fb422f6d8d42affd45a736a0bed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Surin/MiniiGame3/เส้น 5.png using Guid(c68d4fb422f6d8d42affd45a736a0bed) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'a91b151d00a5cc03200b41a62b4b5ff4') in 0.0421687 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Surin/MiniiGame3/มะพร้าว4.png
+  artifactKey: Guid(e60a6eaf4adf787449019da354bf64a4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Surin/MiniiGame3/มะพร้าว4.png using Guid(e60a6eaf4adf787449019da354bf64a4) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'ea356c4f30b3f9d729a61492a2a9ac52') in 0.049587 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 4
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000065 seconds.
+  path: Assets/Surin/open/ปาก.png
+  artifactKey: Guid(b3ed3cae86cc414489b19b1c49a4454a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Surin/open/ปาก.png using Guid(b3ed3cae86cc414489b19b1c49a4454a) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '772baa3f414f989513f52b6236744771') in 0.0477915 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
 
 Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
 AssetImportWorker is now disconnected from the server

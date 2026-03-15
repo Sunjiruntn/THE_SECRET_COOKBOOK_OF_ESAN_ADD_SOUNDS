@@ -1466,6 +1466,7 @@ MonoBehaviour:
   coconutInBowl: {fileID: 351135786}
   pandanInBowl: {fileID: 694125353}
   statusText: {fileID: 801174688}
+  statusPanel: {fileID: 55760112}
   ingredientButtons: {fileID: 1793594288}
   potController: {fileID: 483247119}
   currentStep: 0
@@ -1505,6 +1506,7 @@ MonoBehaviour:
   bgmClip: {fileID: 8300000, guid: 32caefba09d4f4f4bbe5c8e8873b1960, type: 3}
   clickSfx: {fileID: 8300000, guid: 250957c3fb0d85045985bf22c956534d, type: 3}
   introVoice: {fileID: 0}
+  grandmaCharacter: {fileID: 0}
 --- !u!4 &530756327
 Transform:
   m_ObjectHideFlags: 0

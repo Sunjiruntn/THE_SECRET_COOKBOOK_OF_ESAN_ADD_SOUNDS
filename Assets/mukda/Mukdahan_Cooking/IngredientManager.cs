@@ -23,6 +23,7 @@ public class IngredientManager : MonoBehaviour
 
     [Header("UI Feedback")]
     public TextMeshProUGUI statusText;
+    public GameObject statusPanel;
     public GameObject ingredientButtons; // กลุ่มปุ่มกด แป้ง น้ำตาล...
     [Header("Next Phase (Pot/Pan)")]
     public PotPaddleController potController;
@@ -74,7 +75,19 @@ public class IngredientManager : MonoBehaviour
 
         if (TestGameManager.Instance != null && TestGameManager.Instance.isTestMode)
         {
-            statusText.gameObject.SetActive(false);
+            if (statusText != null) statusText.gameObject.SetActive(false);
+            if (statusPanel != null) statusPanel.SetActive(false);
+            Debug.Log("[โหมดสอบ] ซ่อน Status เรียบร้อยแล้ว");
+        }
+        else
+        {
+            // 🟢 โหมดปกติ: เปิดข้อความสอน
+            if (statusText != null)
+            {
+                statusText.gameObject.SetActive(true);
+                statusText.text = "ขั้นตอนแรกให้ใส่แป้งข้าวเจ้าและน้ำตาลลงในชาม";
+            }
+            if (statusPanel != null) statusPanel.SetActive(true);
         }
     }
 

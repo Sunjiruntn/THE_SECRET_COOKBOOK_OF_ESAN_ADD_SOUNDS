@@ -1,14 +1,14 @@
 using UnityEngine;
-using TMPro; // อย่าลืมบรรทัดนี้ ไม่งั้นใช้ TextMeshPro ไม่ได้จ้ะ
+using TMPro;
 using UnityEngine.SceneManagement;
-
 
 public class EndingSystem : MonoBehaviour
 {
     public bool canEndGame = false;
+
     [Header("UI Components")]
-    public TextMeshProUGUI outroText; // ลาก Text ใน Panel มาใส่
-    public GameObject levelCompletePanel;  // หน้าต่างจบเกม (ที่มีปุ่มไปต่อ)
+    public TextMeshProUGUI outroText;
+    public GameObject levelCompletePanel;
     public GameObject dialoguePanel;
 
     [Header("Game Data Settings")]
@@ -16,24 +16,57 @@ public class EndingSystem : MonoBehaviour
     public string nextSceneName = "MiniGame1Surin";
 
     [Header("Dialogue List")]
-    [TextArea(3, 10)] // ทำให้ช่องพิมพ์ข้อความกว้างขึ้น
-    public string[] sentences; // พิมพ์ลิสต์ข้อความจบที่นี่
+    [TextArea(3, 10)]
+    public string[] sentences;
     public GameObject ingreGroup;
     private int index = 0;
 
     public TextMeshProUGUI statusText;
 
+    void Awake()
+    {
+        // 🌟 ซ่อน UI ที่ไม่จำเป็นตอนเริ่มเกมทันที
+        if (TestGameManager.Instance != null && TestGameManager.Instance.isTestMode)
+        {
+            if (dialoguePanel != null) dialoguePanel.SetActive(false);
+            if (statusText != null) statusText.gameObject.SetActive(false);
+        }
+    }
+
     void OnEnable()
     {
-        statusText.gameObject.SetActive(false);
+        // 1. เช็คว่า "ถึงเวลาจบเกมหรือยัง?" 
+        // ถ้ายังไม่ถึงเวลาจบ (canEndGame เป็น false) ให้ปิดตัวเองไปก่อนแล้วรอระบบเรียกใหม่
         if (!canEndGame)
         {
             this.gameObject.SetActive(false);
             return;
         }
-        // ทำงานทันทีที่ Panel ถูกเปิดขึ้นมา
+
+        // ==========================================
+        // 🛑 2. ถ้าถึงเวลาจบเกมแล้ว (canEndGame = true) และเป็น "โหมดสอบ"
+        // ==========================================
+        if (TestGameManager.Instance != null && TestGameManager.Instance.isTestMode)
+        {
+            Debug.Log("✅ [โหมดสอบ] ทำอาหารเสร็จแล้ว! กำลังส่งคะแนนและจบการสอบ...");
+
+            // ปิด UI ทิ้งให้หมด
+            if (dialoguePanel != null) dialoguePanel.SetActive(false);
+            if (statusText != null) statusText.gameObject.SetActive(false);
+
+            // 🌟 สั่งจบการสอบและเด้งไปหน้าโชว์เกรดทันที! ไม่ต้องรออ่านข้อความคุณย่า
+            TestGameManager.Instance.FinishExam();
+            return; // หยุดการทำงานของฟังก์ชันนี้เลย
+        }
+
+        // ==========================================
+        // 🟢 3. ถ้าเป็น "โหมดสอนปกติ" ให้เล่นข้อความจบ
+        // ==========================================
+        if (statusText != null) statusText.gameObject.SetActive(false);
+
         index = 0;
-        if (sentences.Length > 0) outroText.text = sentences[index];
+        if (sentences.Length > 0 && outroText != null)
+            outroText.text = sentences[index];
 
         if (levelCompletePanel != null) levelCompletePanel.SetActive(false);
         if (dialoguePanel != null) dialoguePanel.SetActive(true);
@@ -41,7 +74,7 @@ public class EndingSystem : MonoBehaviour
 
     void Update()
     {
-        // กดคลิกเมาส์เพื่อเปลี่ยนข้อความ
+        // โหมดสอบไม่ต้องรอกดเมาส์แล้ว เพราะมันข้ามไปตั้งแต่ OnEnable
         if (Input.GetMouseButtonDown(0))
         {
             NextSentence();
@@ -53,34 +86,28 @@ public class EndingSystem : MonoBehaviour
         if (index < sentences.Length - 1)
         {
             index++;
-            outroText.text = sentences[index];
+            if (outroText != null) outroText.text = sentences[index];
         }
         else
         {
-            // อ่านครบทุกประโยคแล้ว -> บันทึกและจบเกม
             EndLevelAndSave();
         }
     }
+
     void EndLevelAndSave()
     {
         Debug.Log("Outro จบแล้ว! กำลังบันทึกและปิดทุกอย่าง...");
-        if (TestGameManager.Instance != null && TestGameManager.Instance.isTestMode)
-        {
-            TestGameManager.Instance.FinishExam();
-            return; // หยุดการทำงานของ WinPanel ด้านล่างทั้งหมด
-        }
-        // --- 1. สั่งปิด Ingre ทิ้งเป็นอย่างแรกเลย! (สำคัญมาก) ---
+
+        // --- 1. สั่งปิด Ingre ทิ้งเป็นอย่างแรกเลย ---
         if (ingreGroup != null)
         {
             ingreGroup.SetActive(false);
         }
         else
         {
-            // ถ้าลืมลาก ให้มันลองหาเองดู (กันเหนียว)
             GameObject findIngre = GameObject.Find("ingre");
             if (findIngre != null) findIngre.SetActive(false);
         }
-        // -----------------------------------------------------
 
         // 2. บันทึกเกม
         if (GameDataController.Instance != null)
@@ -90,14 +117,14 @@ public class EndingSystem : MonoBehaviour
             GameDataController.Instance.SaveCurrentScene(nextSceneName);
         }
 
-        // 3. เปิดหน้า WinPanel (Level Complete)
+        // 3. เปิดหน้า WinPanel
         if (levelCompletePanel != null)
         {
             levelCompletePanel.SetActive(true);
-            levelCompletePanel.transform.SetAsLastSibling(); // ดันมาหน้าสุด
+            levelCompletePanel.transform.SetAsLastSibling();
         }
 
-        // 4. ปิดหน้า Outro (ปิดตัวเองเป็นอย่างสุดท้าย)
+        // 4. ปิดหน้า Outro 
         if (dialoguePanel != null)
         {
             dialoguePanel.SetActive(false);
@@ -108,7 +135,6 @@ public class EndingSystem : MonoBehaviour
         }
     }
 
-    // ฟังก์ชันสำหรับปุ่มใน LevelCompletePanel (กดแล้วเปลี่ยนฉาก)
     public void LoadNextScene()
     {
         SceneManager.LoadScene(nextSceneName);

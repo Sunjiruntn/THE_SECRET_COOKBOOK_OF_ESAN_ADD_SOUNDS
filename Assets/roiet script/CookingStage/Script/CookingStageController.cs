@@ -23,7 +23,21 @@ public class CookingStageController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            LogRaycastUnderPointer(); // คลิกซ้ายจะแสดงรายชื่อวัตถุที่รับเรย์แคสต์
+            LogRaycastUnderPointer();
+        }
+
+    
+        if (TestGameManager.Instance != null && TestGameManager.Instance.isTestMode)
+        {
+            if (Grandma_FullBody != null && Grandma_FullBody.activeInHierarchy)
+                Grandma_FullBody.SetActive(false);
+
+            if (Grandma_BehindTable != null && Grandma_BehindTable.activeInHierarchy)
+                Grandma_BehindTable.SetActive(false);
+
+            // ดักปิดกรอบข้อความคำใบ้ด้วย เผื่อมันเด้งมาพร้อมคุณย่า
+            if (instructionText != null && instructionText.gameObject.activeInHierarchy)
+                instructionText.gameObject.SetActive(false);
         }
     }
 
@@ -1106,9 +1120,17 @@ public class CookingStageController : MonoBehaviour
     void HandleWrongStep()
     {
         Debug.Log("🚨 WRONG STEP! Resetting...");
-        if (TestGameManager.Instance != null)
+        if (TestGameManager.Instance.isTestMode)
         {
-            TestGameManager.Instance.RecordMistake();
+            Debug.Log("[โหมดสอบ] กดผิด! จดคะแนนแล้ว และบังคับซ่อนคุณย่า");
+
+            // ✅ บังคับปิดคุณย่าและตัวหนังสืออีกรอบ! (กันมันแอบเด้งขึ้นมาเอง)
+            if (Grandma_FullBody != null) Grandma_FullBody.SetActive(false);
+            if (Grandma_BehindTable != null) Grandma_BehindTable.SetActive(false);
+            if (instructionText != null) instructionText.gameObject.SetActive(false);
+
+            // ออกจากฟังก์ชันไปเลย ปล่อยโต๊ะทำอาหารไว้เหมือนเดิม
+            return;
         }
         // 1. ปิดการคลิกทุกปุ่มชั่วคราว กันผู้เล่นกดรัว
         SetButtonsAll(false);

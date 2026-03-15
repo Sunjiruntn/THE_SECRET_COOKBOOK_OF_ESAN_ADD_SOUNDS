@@ -20,18 +20,38 @@ public class IntroManager : MonoBehaviour
     public AudioClip clickSfx;           // เสียงปุ่มกด
     public AudioClip introVoice;         // เสียงแนะนำ (มีไฟล์เดียว)
 
+    [Header("--- Test Mode (ลากคุณย่ามาใส่เพื่อซ่อน) ---")]
+    public GameObject grandmaCharacter;  // เพิ่มตัวแปรคุณย่า เผื่ออยากให้ซ่อนในด่านนี้ด้วย
+
+    // 🌟 [เพิ่มใหม่] Awake ทำงานก่อน Start ปิด Panel ทันทีตั้งแต่เฟรมแรกที่เกมโหลด!
+    void Awake()
+    {
+        if (TestGameManager.Instance != null && TestGameManager.Instance.isTestMode)
+        {
+            if (introPanel != null) introPanel.SetActive(false);
+            if (grandmaCharacter != null) grandmaCharacter.SetActive(false);
+        }
+    }
+
     void Start()
     {
         if (TestGameManager.Instance != null && TestGameManager.Instance.isTestMode)
         {
-            // โหมดสอบ ข้าม Intro ปิด Panel 
-            introPanel.SetActive(false);
-            PlayBGM(); 
+            // โหมดสอบ ข้าม Intro ปิด Panel (ย้ำอีกรอบเพื่อความชัวร์)
+            if (introPanel != null) introPanel.SetActive(false);
+            if (grandmaCharacter != null) grandmaCharacter.SetActive(false);
+
+            // ปิดเสียงพากย์ด้วยเผื่อมันแอบดัง
+            if (voiceSource != null) voiceSource.Stop();
+
+            PlayBGM();
             if (ingredientManager != null) ingredientManager.StartMixingPhase();
-            return; 
+            return;
         }
+
         currentIndex = 0;
-        introText.text = introLines[currentIndex];
+        if (introText != null && introLines.Length > 0)
+            introText.text = introLines[currentIndex];
 
         // 1. เริ่มเล่นเสียงแนะนำทันทีที่เปิดเกม
         if (voiceSource != null && introVoice != null)

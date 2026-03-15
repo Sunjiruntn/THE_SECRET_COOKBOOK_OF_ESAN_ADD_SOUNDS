@@ -6,6 +6,7 @@ using System.Collections;
 public class TestGameManager : MonoBehaviour
 {
     public static TestGameManager Instance;
+    
     [Header("ข้อมูลด่านฝึกสอน (Tutorial)")]
     private float tutorialStartTime;
     public float tutorialTimeUsed;
@@ -63,7 +64,6 @@ public class TestGameManager : MonoBehaviour
         if (!isRecording) return;
 
         correctCount++;
-        // เปลี่ยนข้อความตรงนี้ ให้ดูเป็นกลางๆ
         Debug.Log($"🟢 [บันทึกคะแนน] ทำถูก! (คะแนนสะสม: {correctCount})");
     }
 
@@ -78,7 +78,7 @@ public class TestGameManager : MonoBehaviour
     {
         if (!isTestMode) return;
 
-        isRecording = false; // หยุดนับ
+        isRecording = false; 
         isTestMode = false;
         float timeUsed = Time.time - startTime;
 
@@ -103,16 +103,22 @@ public class TestGameManager : MonoBehaviour
         PlayerPrefs.SetFloat("TimeUsed", timeUsed);
         PlayerPrefs.SetString("FinalGrade", grade);
 
+        // ==========================================
+        // 🌟 [เพิ่มโค้ดบรรทัดนี้] บันทึกชื่อด่านที่สุ่มได้ เพื่อส่งไปแปลชื่อที่หน้า Result
+        // ==========================================
+        PlayerPrefs.SetString("TestedScene", currentMenuName);
+
         StartCoroutine(SendToGoogleForm(currentMenuName, "Test", accuracyScore, timeUsed, mistakeCount, grade));
         SceneManager.LoadScene(resultSceneName);
     }
 
     IEnumerator SendToGoogleForm(string menu, string mode, int accuracy, float time, int fails, string grade)
     {
-        Debug.Log($"📦 เช็กก่อนส่งฟอร์ม! แม่นยำ: {accuracy}% | เวลา: {time} | ผิด: {fails}"); WWWForm form = new WWWForm();
+        Debug.Log($"📦 เช็กก่อนส่งฟอร์ม! แม่นยำ: {accuracy}% | เวลา: {time} | ผิด: {fails}"); 
+        WWWForm form = new WWWForm();
 
         form.AddField(entryId_MenuName, menu);
-        form.AddField(entryId_Mode, mode); // ตัวบอกว่าแถวนี้เป็น Tutorial หรือ Test
+        form.AddField(entryId_Mode, mode); 
         form.AddField(entryId_Accuracy, accuracy.ToString());
         form.AddField(entryId_Time, time.ToString("F2"));
         form.AddField(entryId_FailCount, fails.ToString());
@@ -127,5 +133,4 @@ public class TestGameManager : MonoBehaviour
                 Debug.LogError("❌ Form Error: " + www.error);
         }
     }
-
 }

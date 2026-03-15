@@ -66,5 +66,5 @@
     "explorer.fileNesting.patterns": {
         "*.sln": "*.csproj"
     },
-    "dotnet.defaultSolution": "THE_SECRET_COOKBOOK_OF_ESAN_ADD_SOUNDS-Add-random-cooking.sln"
+    "dotnet.defaultSolution": "THE_SECRET_COOKBOOK_OF_ESAN_ADD_SOUNDS.sln"
 }
