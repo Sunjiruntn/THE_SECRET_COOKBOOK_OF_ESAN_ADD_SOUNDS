@@ -43,16 +43,36 @@ public class ProvinceMapController : MonoBehaviour
 
     void UpdateButtons()
     {
-        if (GameDataController.Instance == null) return;
+        // ดักจับข้อ 2: ถ้าไม่มี GameData โชว์ Error สีแดงเลย!
+        if (GameDataController.Instance == null)
+        {
+            Debug.LogError("❌ GameDataController หายไป! โค้ดปุ่มเลยหยุดทำงาน (ลองเริ่มเล่นจากหน้า Intro หรือ MainMenu ดูครับ)");
+            return;
+        }
 
-        // ดึงค่าว่าจังหวัดนี้ เล่นถึงด่านไหนแล้ว?
         int currentLevel = GameDataController.Instance.playerData.currentLevelInProvince[provinceIndex];
+        Debug.Log("📌 ตอนนี้จังหวัดที่ " + provinceIndex + " เล่นถึงด่านที่: " + currentLevel);
 
-        // วนลูปเช็คทุกปุ่ม
         for (int i = 0; i < levelButtons.Length; i++)
         {
             bool isUnlocked = (i <= currentLevel);
             levelButtons[i].interactable = isUnlocked;
+
+            CanvasGroup cg = levelButtons[i].GetComponent<CanvasGroup>();
+            if (cg == null)
+            {
+                cg = levelButtons[i].gameObject.AddComponent<CanvasGroup>();
+            }
+
+            cg.alpha = isUnlocked ? 1.0f : 0.6f;
+
+            SpriteRenderer[] sprites = levelButtons[i].GetComponentsInChildren<SpriteRenderer>();
+            foreach (SpriteRenderer sr in sprites)
+            {
+                Color color = sr.color;
+                color.a = isUnlocked ? 1.0f : 0.2f; // ลด Alpha ของสีลงครึ่งนึง
+                sr.color = color;
+            }
         }
 
         if (btnExam != null)
@@ -60,6 +80,14 @@ public class ProvinceMapController : MonoBehaviour
             // ถ้าด่านปัจจุบัน (currentLevel) ทะลุด่านสุดท้ายที่ตั้งไว้ไปแล้ว ให้ปลดล็อคห้องสอบ!
             bool isExamUnlocked = currentLevel > lastRegularLevelIndex;
             btnExam.interactable = isExamUnlocked;
+
+            // ทำให้ปุ่มสอบจางลงด้วยถ้ายังไม่ปลดล็อค
+            CanvasGroup cgExam = btnExam.GetComponent<CanvasGroup>();
+            if (cgExam == null)
+            {
+                cgExam = btnExam.gameObject.AddComponent<CanvasGroup>();
+            }
+            cgExam.alpha = isExamUnlocked ? 1.0f : 0.5f;
         }
     }
 
