@@ -4576,7 +4576,7 @@ MonoBehaviour:
   winPanel: {fileID: 2045850664}
   nextLevelButton: {fileID: 715176102}
   nextSceneName: CookingStageSurin
-  provinceIndex: 2
+  provinceIndex: 4
   dialoguePanel: {fileID: 1717816322}
   dialogueText: {fileID: 663336886}
   introSentences:

@@ -93,7 +93,8 @@ public class GameDataController : MonoBehaviour
         // 3. เพิ่มเลเวลขึ้น 1 (เพื่อให้ด่านถัดไปเปิด)
         // เราจะเช็คก่อนว่า เลเวลมันตันหรือยัง (สมมติว่าแต่ละจังหวัดมี 3 ด่าน คือ 0, 1, 2 -> จบที่ 3)
         // ถ้ายังไม่ตัน ก็บวกเพิ่มได้
-        if (currentLv < 3)
+        int maxLevelsPerProvince = 10;
+        if (currentLv < maxLevelsPerProvince)
         {
             playerData.currentLevelInProvince[provinceIndex]++;
             Debug.Log($"✅ อัพเลเวลจังหวัด {provinceIndex} จาก {currentLv} -> เป็น {playerData.currentLevelInProvince[provinceIndex]}");

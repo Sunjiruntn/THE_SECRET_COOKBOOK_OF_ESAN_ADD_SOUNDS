@@ -2340,7 +2340,8 @@ MonoBehaviour:
   backgroundMusic: {fileID: 8300000, guid: d0c50723a5bfebd49ab5669f410c13da, type: 3}
   successPanel: {fileID: 972059774}
   successNextButton: {fileID: 0}
-  nextSceneName: 
+  nextSceneName: MiniGame1Mukda
+  provinceIndex: 2
 --- !u!4 &1965430514
 Transform:
   m_ObjectHideFlags: 0

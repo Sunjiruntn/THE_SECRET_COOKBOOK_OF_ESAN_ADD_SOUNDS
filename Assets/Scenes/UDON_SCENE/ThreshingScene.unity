@@ -7164,7 +7164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bff7880776629741b627cdbb61215d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  provinceIndex: 4
+  provinceIndex: 2
   nextSceneName: DryingRiceScene
   riceStalks: {fileID: 1883866675}
   fullRice: {fileID: 1957365193}

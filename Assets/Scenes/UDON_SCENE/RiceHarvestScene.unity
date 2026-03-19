@@ -3461,7 +3461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43fc2e5dbc7d6db49b82a8ef0172b794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  provinceIndex: 4
+  provinceIndex: 2
   nextSceneName: ThreshingScene
   scoreText: {fileID: 1483912320}
   successPanel: {fileID: 1714697444}

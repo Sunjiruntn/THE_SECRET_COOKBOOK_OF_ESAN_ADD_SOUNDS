@@ -29,6 +29,10 @@ public class PotPaddleController : MonoBehaviour
     private bool canAddBeans = false; // สถานะว่ากดถั่วได้หรือยัง
     private bool beansAdded = false;  // สถานะว่าใส่ถั่วไปแล้วหรือยัง
     private Vector3 lastTipPos;
+
+    [Header("--- Save System Settings ---")]
+    public int provinceIndex = 3; // จังหวัดที่ 3
+    public string nextSceneName = "openSurin";
     void Awake()
     {
         // สั่งปิดขนมทุกสเตจทันทีที่เกมโหลด! (ไม่สนว่าจะติ๊กอะไรไว้ใน Inspector)
@@ -172,6 +176,14 @@ public class PotPaddleController : MonoBehaviour
             if (statusText != null)
             {
                 statusText.text = "ขนมสุกพร้อมห่อแล้วจ้า!";
+            }
+
+            if (GameDataController.Instance != null)
+            {
+                GameDataController.Instance.PassLevel(provinceIndex);        // ปลดล็อคระดับของจังหวัดนี้ (จ.3)
+                GameDataController.Instance.SaveCurrentScene(nextSceneName); // จำด่านต่อไป
+                GameDataController.Instance.SaveGame();                      // บันทึกการเปลี่ยนแปลงลงเครื่อง
+                Debug.Log("✅ บันทึกข้อมูลผ่านด่านทำอาหารจังหวัด 3 เรียบร้อย!");
             }
             if (outroPanel != null) outroPanel.SetActive(true);
 

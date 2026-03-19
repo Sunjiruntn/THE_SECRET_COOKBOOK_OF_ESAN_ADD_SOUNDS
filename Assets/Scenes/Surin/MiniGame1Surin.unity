@@ -8387,7 +8387,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc582dc17968e794ab82de53edc2e8f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  provinceIndex: 2
+  provinceIndex: 4
   nextSceneName: MiniGame2Surin
   bgmSource: {fileID: 2110937715}
   sfxSource: {fileID: 2110937714}

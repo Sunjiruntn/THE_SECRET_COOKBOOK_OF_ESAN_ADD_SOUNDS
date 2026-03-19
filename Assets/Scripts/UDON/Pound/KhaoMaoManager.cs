@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Video; 
+using UnityEngine.Video;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
@@ -8,33 +8,33 @@ public class KhaoMaoManager : MonoBehaviour
 {
     [Header("--- Cutscene Settings ---")]
     [Tooltip("ลาก Object Video Player ที่เตรียมวิดีโอจบเกมไว้มาใส่ตรงนี้")]
-    public VideoPlayer cutscenePlayer;   
+    public VideoPlayer cutscenePlayer;
 
     [Header("--- Animator & Objects ---")]
     [Tooltip("ลาก Object สากที่มี Animator มาใส่")]
-    public Animator pestleAnimator;      
+    public Animator pestleAnimator;
     [Tooltip("ลากกลุ่ม UI (เกจ, แถบเขียว, ตัวชี้) มาใส่เพื่อสั่งเปิด/ปิด")]
-    public GameObject skillCheckGroup;   
+    public GameObject skillCheckGroup;
 
     [Header("--- UI Skill Check Elements ---")]
-    public RectTransform indicator;      
-    public RectTransform greenZone;      
+    public RectTransform indicator;
+    public RectTransform greenZone;
     public Image feedbackOverlay;        // Image เต็มจอสำหรับทำสีวาบ (Alpha 0)
 
     [Header("--- Rice Display & Sprites ---")]
-    public Image miniRiceDisplay;        
+    public Image miniRiceDisplay;
     public Sprite[] progressSprites;     // ภาพข้าว 5 ระยะ (มุมจอ)
-    public SpriteRenderer mortarRiceRenderer; 
+    public SpriteRenderer mortarRiceRenderer;
     public Sprite[] mortarRiceSprites;   // ภาพข้าว 5 ระยะ (ในครก)
     public Transform riceTransform;      // สำหรับทำ Effect ยืดหด
 
     [Header("--- Game Settings ---")]
     public float moveSpeed = 400f;       // ความเร็วเริ่มต้น
     public float speedIncrement = 50f;   // ความเร็วที่จะเพิ่มขึ้นในแต่ละเซต
-    public float gaugeLimit = 150f;      
-    public float appearanceInterval = 3f; 
-    public Color perfectColor = new Color(0, 1, 0, 0.3f); 
-    public Color missColor = new Color(1, 0, 0, 0.3f);    
+    public float gaugeLimit = 150f;
+    public float appearanceInterval = 3f;
+    public Color perfectColor = new Color(0, 1, 0, 0.3f);
+    public Color missColor = new Color(1, 0, 0, 0.3f);
 
     [Header("--- New Tutorial & Audio Settings ---")]
     public GameObject tutorialTextUI;    // UI Text แนะนำ (แสดง 5 วินาทีแรก)
@@ -50,13 +50,14 @@ public class KhaoMaoManager : MonoBehaviour
     [Header("--- Success Panel Settings ---")]
     public GameObject successPanel;          // UI แสดงความยินดี
     public Button successNextButton;         // ปุ่มถัดไป
-    public string nextSceneName = "NextScene";  // ซีนถัดไป
-    // ----------------------------
-
+    public string nextSceneName = "MiniGame1Mukda";  // ซีนถัดไป
+                                                     // ----------------------------
+    [Header("--- Save System Settings ---")]
+    public int provinceIndex = 0;
     private bool movingRight = true;
     private bool canHit = false;
-    private int hitCounter = 0;          
-    private int currentSet = 0;          
+    private int hitCounter = 0;
+    private int currentSet = 0;
     private bool isGameOver = true;      // ล็อคไว้จนกว่า Tutorial จะจบ
 
     void Start()
@@ -65,9 +66,9 @@ public class KhaoMaoManager : MonoBehaviour
         if (skillCheckGroup != null) skillCheckGroup.SetActive(false);
         if (feedbackOverlay != null) feedbackOverlay.color = new Color(0, 0, 0, 0);
         if (cutscenePlayer != null) cutscenePlayer.gameObject.SetActive(false);
-        
-        UpdateVisuals(); 
-        
+
+        UpdateVisuals();
+
         // เริ่มลำดับการเข้าด่าน (Tutorial -> Voice -> Music -> Game)
         StartCoroutine(StartSequenceRoutine());
 
@@ -108,7 +109,7 @@ public class KhaoMaoManager : MonoBehaviour
         }
 
         isGameOver = false;
-        StartCoroutine(SkillCheckRoutine()); 
+        StartCoroutine(SkillCheckRoutine());
     }
 
     void Update()
@@ -180,20 +181,20 @@ public class KhaoMaoManager : MonoBehaviour
         if (distance <= zoneHalfWidth)
         {
             hitCounter++;
-            StartCoroutine(FlashScreen(perfectColor)); 
-            StartCoroutine(SquashAndStretchEffect());  
-            
+            StartCoroutine(FlashScreen(perfectColor));
+            StartCoroutine(SquashAndStretchEffect());
+
             if (hitCounter >= 3)
             {
                 currentSet++;
                 hitCounter = 0;
-                UpdateVisuals(); 
+                UpdateVisuals();
             }
         }
         else
         {
             hitCounter = 0;
-            StartCoroutine(FlashScreen(missColor)); 
+            StartCoroutine(FlashScreen(missColor));
         }
 
         canHit = false;
@@ -203,7 +204,7 @@ public class KhaoMaoManager : MonoBehaviour
     void UpdateVisuals()
     {
         int index = Mathf.Clamp(currentSet, 0, 4);
-        
+
         if (miniRiceDisplay != null && progressSprites.Length > index)
             miniRiceDisplay.sprite = progressSprites[index];
 
@@ -223,7 +224,13 @@ public class KhaoMaoManager : MonoBehaviour
         skillCheckGroup.SetActive(false);
 
         if (musicSource != null) musicSource.Stop();
-
+        if (GameDataController.Instance != null)
+        {
+            GameDataController.Instance.PassLevel(provinceIndex);        // ปลดล็อคระดับของจังหวัดนี้
+            GameDataController.Instance.SaveCurrentScene(nextSceneName); // จำด่านต่อไป
+            GameDataController.Instance.SaveGame();                      // บันทึกการเปลี่ยนแปลง
+            Debug.Log("✅ บันทึกข้อมูลผ่านด่านข้าวเม่าเรียบร้อย!");
+        }
         if (cutscenePlayer != null)
         {
             cutscenePlayer.gameObject.SetActive(true);

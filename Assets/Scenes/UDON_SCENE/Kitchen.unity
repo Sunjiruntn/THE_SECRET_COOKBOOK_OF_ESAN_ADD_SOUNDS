@@ -11096,7 +11096,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bd89b364a85e0846b58628d639b8775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  provinceIndex: 4
+  provinceIndex: 2
   nextSceneName: PoundScene
   heatSlider: {fileID: 121435992}
   progressCircleFill: {fileID: 191844513}

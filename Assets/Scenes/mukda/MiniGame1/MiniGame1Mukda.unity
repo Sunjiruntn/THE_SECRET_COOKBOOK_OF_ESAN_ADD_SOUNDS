@@ -1557,7 +1557,7 @@ MonoBehaviour:
   winPanel: {fileID: 259707467}
   nextLevelButton: {fileID: 237276425}
   nextSceneName: MIniGame2Mukda
-  provinceIndex: 1
+  provinceIndex: 3
   bgmSource: {fileID: 577327356}
   sfxSource: {fileID: 577327355}
   voiceSource: {fileID: 577327354}

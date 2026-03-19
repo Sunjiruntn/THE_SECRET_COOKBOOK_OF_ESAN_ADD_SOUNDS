@@ -55,24 +55,21 @@ public class ProvinceMapController : MonoBehaviour
 
         for (int i = 0; i < levelButtons.Length; i++)
         {
+            // ด่านนี้ปลดล็อคหรือยัง? (ถ้า index ของปุ่ม น้อยกว่าหรือเท่ากับ level ที่เล่นถึง = ปลดล็อค)
             bool isUnlocked = (i <= currentLevel);
+
+            // ✅ ใช้ปุ่มเปิด/ปิดการกด (interactable จะจัดการเปลี่ยนสีเทาให้เองถ้าตั้งค่าปุ่มไว้)
             levelButtons[i].interactable = isUnlocked;
 
+            // ✅ ใช้ CanvasGroup คุมความโปร่งใส (ล้างโค้ด SpriteRenderer ทิ้งไปเลย!)
             CanvasGroup cg = levelButtons[i].GetComponent<CanvasGroup>();
             if (cg == null)
             {
                 cg = levelButtons[i].gameObject.AddComponent<CanvasGroup>();
             }
 
-            cg.alpha = isUnlocked ? 1.0f : 0.6f;
-
-            SpriteRenderer[] sprites = levelButtons[i].GetComponentsInChildren<SpriteRenderer>();
-            foreach (SpriteRenderer sr in sprites)
-            {
-                Color color = sr.color;
-                color.a = isUnlocked ? 1.0f : 0.2f; // ลด Alpha ของสีลงครึ่งนึง
-                sr.color = color;
-            }
+            // ถ้าปลดล็อคแล้ว สีเต็ม (1.0), ถ้ายังล็อคอยู่ ให้จางลงครึ่งนึง (0.5)
+            cg.alpha = isUnlocked ? 1.0f : 0.5f;
         }
 
         if (btnExam != null)

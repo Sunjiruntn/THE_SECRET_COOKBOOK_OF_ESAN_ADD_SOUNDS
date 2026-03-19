@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 71ed2b38ddd29684eb9edb7a08a5413d
+guid: 420bf197209c7504ba245642432a294f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5420722295700623059
-    second: "\u0E19\u0E21\u0E40\u0E19\u0E35\u0E22\u0E25_0"
+      213: -3366557728650395639
+    second: "\u0E01\u0E23\u0E30\u0E14\u0E2D\u0E07\u0E1B\u0E39_0"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -24,7 +24,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "\u0E19\u0E21\u0E40\u0E19\u0E35\u0E22\u0E25_0"
+      name: "\u0E01\u0E23\u0E30\u0E14\u0E2D\u0E07\u0E1B\u0E39_0"
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 321
-        height: 230
+        x: 45
+        y: 83
+        width: 392
+        height: 392
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3de864d25364a3b40800000000000000
-      internalID: 5420722295700623059
+      spriteID: 90082f325959741d0800000000000000
+      internalID: -3366557728650395639
       vertices: []
       indices: 
       edges: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "\u0E19\u0E21\u0E40\u0E19\u0E35\u0E22\u0E25_0": 5420722295700623059
+      "\u0E01\u0E23\u0E30\u0E14\u0E2D\u0E07\u0E1B\u0E39_0": -3366557728650395639
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

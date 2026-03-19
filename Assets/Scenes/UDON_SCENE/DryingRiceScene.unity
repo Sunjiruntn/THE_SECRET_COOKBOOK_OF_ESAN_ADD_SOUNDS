@@ -1406,7 +1406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0277f0fa7c43c0e419926bb896c81cca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  provinceIndex: 4
+  provinceIndex: 2
   nextSceneName: Kitchen
   videoPlayer: {fileID: 788655752}
   videoUI: {fileID: 788655751}
