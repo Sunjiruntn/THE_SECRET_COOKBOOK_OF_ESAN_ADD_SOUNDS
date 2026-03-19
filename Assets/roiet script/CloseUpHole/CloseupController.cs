@@ -197,7 +197,8 @@ public class CloseupController : MonoBehaviour
             ShovelButton.interactable = false; // ปิดไว้ก่อน กันคลิกค้างข้ามซีน
         }
 
-        if (BackButton) BackButton.onClick.AddListener(() => {
+        if (BackButton) BackButton.onClick.AddListener(() =>
+        {
             if (sfxSource && clickSfx) sfxSource.PlayOneShot(clickSfx); // เสียงกดกลับ
             SceneManager.LoadScene("SelectHole");
         });
@@ -634,7 +635,8 @@ public class CloseupController : MonoBehaviour
             actionButton.onClick.RemoveAllListeners();
 
             // 2. สั่งว่า "ถ้าโดนกด ให้ไปเรียกฟังก์ชัน GoToKitchen นะ"
-            actionButton.onClick.AddListener(() => {
+            actionButton.onClick.AddListener(() =>
+            {
                 if (sfxSource && clickSfx) sfxSource.PlayOneShot(clickSfx); // เสียงกดเข้าครัว
                 GoToKitchen();
             });
@@ -650,6 +652,11 @@ public class CloseupController : MonoBehaviour
 
             // เซฟชื่อฉากล่าสุด
             GameDataController.Instance.SaveCurrentScene("CookingStage");
+        }
+
+        if (HoleManager.Instance != null)
+        {
+            Destroy(HoleManager.Instance.gameObject);
         }
 
         // ไปฉากทำอาหาร

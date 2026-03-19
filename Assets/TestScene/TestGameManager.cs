@@ -6,7 +6,7 @@ using System.Collections;
 public class TestGameManager : MonoBehaviour
 {
     public static TestGameManager Instance;
-    
+
     [Header("ข้อมูลด่านฝึกสอน (Tutorial)")]
     private float tutorialStartTime;
     public float tutorialTimeUsed;
@@ -78,7 +78,7 @@ public class TestGameManager : MonoBehaviour
     {
         if (!isTestMode) return;
 
-        isRecording = false; 
+        isRecording = false;
         isTestMode = false;
         float timeUsed = Time.time - startTime;
 
@@ -114,11 +114,11 @@ public class TestGameManager : MonoBehaviour
 
     IEnumerator SendToGoogleForm(string menu, string mode, int accuracy, float time, int fails, string grade)
     {
-        Debug.Log($"📦 เช็กก่อนส่งฟอร์ม! แม่นยำ: {accuracy}% | เวลา: {time} | ผิด: {fails}"); 
+        Debug.Log($"📦 เช็กก่อนส่งฟอร์ม! แม่นยำ: {accuracy}% | เวลา: {time} | ผิด: {fails}");
         WWWForm form = new WWWForm();
 
         form.AddField(entryId_MenuName, menu);
-        form.AddField(entryId_Mode, mode); 
+        form.AddField(entryId_Mode, mode);
         form.AddField(entryId_Accuracy, accuracy.ToString());
         form.AddField(entryId_Time, time.ToString("F2"));
         form.AddField(entryId_FailCount, fails.ToString());
@@ -132,5 +132,13 @@ public class TestGameManager : MonoBehaviour
             else
                 Debug.LogError("❌ Form Error: " + www.error);
         }
+    }
+    public void ResetScore()
+    {
+        correctCount = 0;
+        mistakeCount = 0;
+        isRecording = false; // สั่งปิดการบันทึกไว้ก่อน จนกว่าจะกดเริ่มสอบจริงๆ
+
+        Debug.Log("🔄 [TestGameManager] ล้างคะแนนสอบเรียบร้อยแล้ว พร้อมเริ่มใหม่!");
     }
 }

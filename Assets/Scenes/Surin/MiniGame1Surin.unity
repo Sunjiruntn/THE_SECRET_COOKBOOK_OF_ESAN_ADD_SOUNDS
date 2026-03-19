@@ -8437,7 +8437,7 @@ MonoBehaviour:
   coolDownSpeed: 15
   drillSpeed: 10
   maxHeat: 100
-  targetDepth: 100
+  targetDepth: 75
 --- !u!4 &2110937711
 Transform:
   m_ObjectHideFlags: 0

@@ -283,7 +283,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 863655586}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CookingStageController, Assembly-CSharp
         m_MethodName: OnClickBowlMeat
         m_Mode: 1
@@ -1134,6 +1134,99 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 407310232}
   m_CullTransparentMesh: 1
+--- !u!1 &413810630
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 413810632}
+  - component: {fileID: 413810631}
+  m_Layer: 0
+  m_Name: cookCode
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &413810631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 413810630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cfee959c76a79340b5f1a63e96030c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextSceneName: MiniGame1Mukda
+  provinceIndex: 0
+  actionButton: {fileID: 1656889029}
+  Grandma_FullBody: {fileID: 309736253}
+  Animator_FullBody: {fileID: 309736255}
+  Grandma_BehindTable: {fileID: 1978118445}
+  Animator_BehindTable: {fileID: 1978118446}
+  Anim_Group_CrabFat: {fileID: 1209633196}
+  Anim_Drop_Veg: {fileID: 15117451}
+  Anim_Pour_num: {fileID: 426967842}
+  Anim_Drop_ch: {fileID: 1122608116}
+  instructionText: {fileID: 1979820053}
+  Pot_Table: {fileID: 2143188998}
+  BG: {fileID: 1998360398}
+  Table: {fileID: 1069033610}
+  BowlMeatButton: {fileID: 23543439}
+  PestleButton: {fileID: 1170933825}
+  BottleWaterButton: {fileID: 811199898}
+  BowlFilterButton: {fileID: 2054694083}
+  BowlFatButton: {fileID: 1339644224}
+  BowlVegButton: {fileID: 2094643920}
+  BowlSeasoningButton: {fileID: 1721522926}
+  MortarButton: {fileID: 1170933825}
+  MortarWithWaterButton: {fileID: 2054694083}
+  Mortar_Empty: {fileID: 2116911591}
+  Mortar_WithCrab: {fileID: 1170933821}
+  Mortar_Pounding: {fileID: 1384651490}
+  sak_ani: {fileID: 1881536939}
+  Mortar_Crushed: {fileID: 1121181213}
+  Mortar_WithWater: {fileID: 2054694079}
+  CoveredBowl: {fileID: 1637070363}
+  FilteredBowl: {fileID: 1079918181}
+  FilteredBowlButton: {fileID: 1079918185}
+  Bowl_Filtering: {fileID: 882293476}
+  Pot_Empty: {fileID: 1623879460}
+  Pot_WithWater: {fileID: 314639302}
+  Pot_Boiling: {fileID: 407310232}
+  Pot_WithCrabFat: {fileID: 2013160312}
+  Pot_BoilingFat: {fileID: 1679318638}
+  Pot_Reducing: {fileID: 1659652888}
+  Pot_AddVet: {fileID: 1222897662}
+  Pot_Addseason: {fileID: 1437134830}
+  Pot_Final: {fileID: 438175540}
+  poundDuration: 1.2
+  boilDuration: 1.5
+  fatBoilDuration: 1.5
+  reduceDuration: 1.5
+  PotFinalButton: {fileID: 1437134834}
+  FinalFoodCard: {fileID: 373428763}
+--- !u!4 &413810632
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 413810630}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.10946, y: 0.51049, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &426967842
 GameObject:
   m_ObjectHideFlags: 0
@@ -2192,7 +2285,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 863655586}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CookingStageController, Assembly-CSharp
         m_MethodName: OnClickBottleWater
         m_Mode: 1
@@ -2261,7 +2354,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 863655587}
-  - component: {fileID: 863655586}
   - component: {fileID: 863655588}
   - component: {fileID: 863655592}
   - component: {fileID: 863655591}
@@ -2274,68 +2366,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &863655586
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 863655585}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cfee959c76a79340b5f1a63e96030c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nextSceneName: MiniGame1Mukda
-  provinceIndex: 0
-  actionButton: {fileID: 1656889029}
-  Grandma_FullBody: {fileID: 309736253}
-  Animator_FullBody: {fileID: 309736255}
-  Grandma_BehindTable: {fileID: 1978118445}
-  Animator_BehindTable: {fileID: 1978118446}
-  Anim_Group_CrabFat: {fileID: 1209633196}
-  Anim_Drop_Veg: {fileID: 15117451}
-  Anim_Pour_num: {fileID: 426967842}
-  Anim_Drop_ch: {fileID: 1122608116}
-  instructionText: {fileID: 1979820053}
-  dialoguePanel: {fileID: 1979820051}
-  Pot_Table: {fileID: 2143188998}
-  BG: {fileID: 1998360398}
-  Table: {fileID: 1069033610}
-  BowlMeatButton: {fileID: 23543439}
-  PestleButton: {fileID: 1170933825}
-  BottleWaterButton: {fileID: 811199898}
-  BowlFilterButton: {fileID: 2054694083}
-  BowlFatButton: {fileID: 1339644224}
-  BowlVegButton: {fileID: 2094643920}
-  BowlSeasoningButton: {fileID: 1721522926}
-  MortarButton: {fileID: 1170933825}
-  MortarWithWaterButton: {fileID: 2054694083}
-  Mortar_Empty: {fileID: 2116911591}
-  Mortar_WithCrab: {fileID: 1170933821}
-  Mortar_Pounding: {fileID: 1384651490}
-  sak_ani: {fileID: 1881536939}
-  Mortar_Crushed: {fileID: 1121181213}
-  Mortar_WithWater: {fileID: 2054694079}
-  CoveredBowl: {fileID: 1637070363}
-  FilteredBowl: {fileID: 1079918181}
-  FilteredBowlButton: {fileID: 1079918185}
-  Bowl_Filtering: {fileID: 882293476}
-  Pot_Empty: {fileID: 1623879460}
-  Pot_WithWater: {fileID: 314639302}
-  Pot_Boiling: {fileID: 407310232}
-  Pot_WithCrabFat: {fileID: 2013160312}
-  Pot_BoilingFat: {fileID: 1679318638}
-  Pot_Reducing: {fileID: 1659652888}
-  Pot_AddVet: {fileID: 1222897662}
-  Pot_Addseason: {fileID: 1437134830}
-  Pot_Final: {fileID: 438175540}
-  poundDuration: 1.2
-  boilDuration: 1.5
-  fatBoilDuration: 1.5
-  reduceDuration: 1.5
-  PotFinalButton: {fileID: 1437134834}
-  FinalFoodCard: {fileID: 373428763}
 --- !u!4 &863655587
 Transform:
   m_ObjectHideFlags: 0
@@ -3148,7 +3178,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 863655586}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CookingStageController, Assembly-CSharp
         m_MethodName: OnClickFilteredBowl
         m_Mode: 1
@@ -3942,7 +3972,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 863655586}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CookingStageController, Assembly-CSharp
         m_MethodName: OnClickPestle
         m_Mode: 1
@@ -4429,7 +4459,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 863655586}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CookingStageController, Assembly-CSharp
         m_MethodName: OnClickBowlFat
         m_Mode: 1
@@ -5535,7 +5565,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 863655586}
+      - m_Target: {fileID: 413810631}
         m_TargetAssemblyTypeName: CookingStageController, Assembly-CSharp
         m_MethodName: OnClickFinalPot
         m_Mode: 1
@@ -6428,7 +6458,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 863655586}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CookingStageController, Assembly-CSharp
         m_MethodName: OnClickBowlSeasoning
         m_Mode: 1
@@ -7162,7 +7192,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 863655586}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CookingStageController, Assembly-CSharp
         m_MethodName: OnClickPestle
         m_Mode: 1
@@ -8029,7 +8059,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 863655586}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CookingStageController, Assembly-CSharp
         m_MethodName: OnClickMortarWater
         m_Mode: 1
@@ -8161,7 +8191,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 863655586}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CookingStageController, Assembly-CSharp
         m_MethodName: OnClickBowlVeg
         m_Mode: 1
@@ -8443,3 +8473,4 @@ SceneRoots:
   - {fileID: 323862085}
   - {fileID: 309736254}
   - {fileID: 1880574762}
+  - {fileID: 413810632}

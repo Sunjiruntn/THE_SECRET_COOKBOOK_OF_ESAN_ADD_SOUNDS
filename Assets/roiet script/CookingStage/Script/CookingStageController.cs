@@ -26,7 +26,7 @@ public class CookingStageController : MonoBehaviour
             LogRaycastUnderPointer();
         }
 
-    
+
         if (TestGameManager.Instance != null && TestGameManager.Instance.isTestMode)
         {
             if (Grandma_FullBody != null && Grandma_FullBody.activeInHierarchy)
@@ -136,6 +136,11 @@ public class CookingStageController : MonoBehaviour
         if (CoveredBowl) CoveredBowl.SetActive(false);
         if (FilteredBowl) FilteredBowl.SetActive(false);
 
+        if (PotFinalButton)
+        {
+            PotFinalButton.gameObject.SetActive(false);
+            PotFinalButton.interactable = false;
+        }
         if (CoveredBowl)
         {
             var img = CoveredBowl.GetComponent<Image>();
@@ -146,6 +151,10 @@ public class CookingStageController : MonoBehaviour
 
     void Start()
     {
+        if (TestGameManager.Instance != null)
+        {
+            TestGameManager.Instance.ResetScore();
+        }
         Anim_Pour_num.SetActive(false);
         Anim_Drop_ch.SetActive(false);
         Anim_Drop_Veg.SetActive(false);

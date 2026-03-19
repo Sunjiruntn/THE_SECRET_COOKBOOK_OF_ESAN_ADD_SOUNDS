@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 9a1bbfe418198184997ee4784e588876
+  - enabled: 1
     path: Assets/Scenes/KHONKAEN_SCENE/TutorialScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
@@ -38,9 +41,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SelectHole.unity
     guid: 95b083658ea04b4479d31529cbefc397
-  - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
-    guid: 9a1bbfe418198184997ee4784e588876
   - enabled: 1
     path: Assets/Scenes/Closeup.unity
     guid: 4869f142bfc15e24094ee4733fe13161
