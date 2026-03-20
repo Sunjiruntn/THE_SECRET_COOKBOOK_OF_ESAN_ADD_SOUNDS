@@ -14,16 +14,16 @@ public class CookingGameManager : MonoBehaviour
     public AudioSource sfxSource;        // สำหรับเสียงปุ่ม/คลิก
     public AudioSource voiceSource;      // สำหรับเสียงพากย์แนะนำ
 
-    public AudioClip bgmClip;            
-    public AudioClip clickSfx;           
+    public AudioClip bgmClip;
+    public AudioClip clickSfx;
     public AudioClip introVoice;         // เสียงพากย์รวมทั้งหมด (หรือประโยคแรก)
     // ==========================================
 
     [Header("--- Win System & Level Settings (เพิ่มใหม่) ---")]
-    public GameObject winPanel;       
-    public Button backToMapButton;    
-    public string nextSceneName = "MapSelect"; 
-    public int provinceIndex = 2;
+    public GameObject winPanel;
+    public Button backToMapButton;
+    public string nextSceneName = "MapSelect";
+    public int provinceIndex = 4;
 
     public static CookingGameManager Instance;
     public GameObject clickableLidOnTable;
@@ -31,7 +31,7 @@ public class CookingGameManager : MonoBehaviour
     [Header("UI & Objects")]
     public TextMeshProUGUI instructionText;
     public BowlController bowl;
-    public SteamingController steamer; 
+    public SteamingController steamer;
 
     [Header("Game Logic")]
     public IngredientType currentRequiredIngredient = IngredientType.None;
@@ -48,9 +48,23 @@ public class CookingGameManager : MonoBehaviour
             GameDataController.Instance.SaveCurrentScene(SceneManager.GetActiveScene().name);
         }
 
-        if (winPanel != null) winPanel.SetActive(false); 
+        if (winPanel != null) winPanel.SetActive(false);
+        // ==========================================
+        // [เพิ่มใหม่] เช็คว่าเป็นโหมดสอบหรือไม่ (ถ้าสอบให้ข้าม Intro)
+        // ==========================================
+        bool isExam = false;
+        if (TestGameManager.Instance != null && TestGameManager.Instance.isTestMode)
+        {
+            isExam = true;
 
-        StartGame(false);
+            // สั่งปิดข้อความคำสอน/คำใบ้ทั้งหมด ทันทีที่รู้ว่าเป็นการสอบ!
+            if (instructionText != null)
+            {
+                instructionText.gameObject.SetActive(false);
+            }
+        }
+
+        StartGame(isExam);
     }
 
     public void StartGame(bool skipIntro)
@@ -95,18 +109,38 @@ public class CookingGameManager : MonoBehaviour
         }
     }
 
+    // --- ส่วนที่เพิ่มเพื่อแก้ปัญหาเสียงซ้อน ---
+    public void StopAllAudio()
+    {
+        if (bgmSource != null) bgmSource.Stop();
+        if (sfxSource != null) sfxSource.Stop();
+        if (voiceSource != null) voiceSource.Stop();
+    }
+
+    // หยุดเสียงเมื่อ Script ถูกทำลาย (เช่น ตอนเปลี่ยนฉาก)
+    void OnDestroy()
+    {
+        StopAllAudio();
+    }
+    // ---------------------------------------
+
     public bool CheckIngredientOnly(IngredientType typeToCheck)
     {
         if (!canPlayerClick || currentRequiredIngredient == IngredientType.None) return false;
 
         if (typeToCheck == currentRequiredIngredient)
         {
-            return true; 
+            return true;
         }
         else
         {
+            if (TestGameManager.Instance != null)
+            {
+                TestGameManager.Instance.RecordMistake();
+            }
+
             StartCoroutine(WrongAndRestartRoutine());
-            return false; 
+            return false;
         }
     }
 
@@ -115,6 +149,11 @@ public class CookingGameManager : MonoBehaviour
         if (bowl != null) bowl.UpdateBowlVisual(finishedIngredient);
         isStepComplete = true;
         currentRequiredIngredient = IngredientType.None;
+        
+        if (TestGameManager.Instance != null)
+        {
+            TestGameManager.Instance.RecordSuccess();
+        }
     }
 
     IEnumerator WrongAndRestartRoutine()
@@ -132,33 +171,37 @@ public class CookingGameManager : MonoBehaviour
             canPlayerClick = false;
             instructionText.text = "กลับมาที่ครัวของเฮา เฮาสิมาเริ่มทำนมเนียลกันเด้อ";
             yield return null;
-            yield return new WaitUntil(() => {
+            yield return new WaitUntil(() =>
+            {
                 bool clicked = Input.GetMouseButtonDown(0);
-                if (clicked && sfxSource && clickSfx) sfxSource.PlayOneShot(clickSfx); // [แทรก] เสียงคลิก
+                if (clicked && sfxSource && clickSfx) sfxSource.PlayOneShot(clickSfx);
                 return clicked;
             });
 
             instructionText.text = "โดยวัตถุดิบจะมีแป้งข้าวเหนียว น้ำตาลทรายแดงหรือน้ำตาลอ้อยบดผง เกลือ มะพร้าวแก่ขูดขุย\nและมะพร้าวทึกทึนขูดหยาบที่ลูกขูดมานั่นเอง";
-            yield return null; 
-            yield return new WaitUntil(() => {
+            yield return null;
+            yield return new WaitUntil(() =>
+            {
                 bool clicked = Input.GetMouseButtonDown(0);
-                if (clicked && sfxSource && clickSfx) sfxSource.PlayOneShot(clickSfx); // [แทรก] เสียงคลิก
+                if (clicked && sfxSource && clickSfx) sfxSource.PlayOneShot(clickSfx);
                 return clicked;
             });
 
             instructionText.text = "แม่เตรียมหม้อไว้แล้วโดยน้ำในหม้อเป็นน้ำมะพร้าว\nและใส่ใบเตยลงใบเพื่อเพิ่มความหอมให้กับขนม";
             yield return null;
-            yield return new WaitUntil(() => {
+            yield return new WaitUntil(() =>
+            {
                 bool clicked = Input.GetMouseButtonDown(0);
-                if (clicked && sfxSource && clickSfx) sfxSource.PlayOneShot(clickSfx); // [แทรก] เสียงคลิก
+                if (clicked && sfxSource && clickSfx) sfxSource.PlayOneShot(clickSfx);
                 return clicked;
             });
 
             instructionText.text = "แล้วก็เอาเนียลหรือกะลามะพร้าวที่ลูกเจาะรู\nมาวางไว้ปากหม้อให้แล้วเด้อ";
             yield return null;
-            yield return new WaitUntil(() => {
+            yield return new WaitUntil(() =>
+            {
                 bool clicked = Input.GetMouseButtonDown(0);
-                if (clicked && sfxSource && clickSfx) sfxSource.PlayOneShot(clickSfx); // [แทรก] เสียงคลิก
+                if (clicked && sfxSource && clickSfx) sfxSource.PlayOneShot(clickSfx);
                 return clicked;
             });
         }
@@ -205,7 +248,7 @@ public class CookingGameManager : MonoBehaviour
         canPlayerClick = true;
         currentRequiredIngredient = IngredientType.PandanLeaf;
 
-        yield return new WaitUntil(() => isStepComplete); 
+        yield return new WaitUntil(() => isStepComplete);
         isStepComplete = false;
 
         canPlayerClick = false;
@@ -225,12 +268,12 @@ public class CookingGameManager : MonoBehaviour
         // STEP 7: ปิดฝา
         instructionText.text = "ปิดฝาหม้อรอให้สุกราว 3-5 นาที";
 
-        if (clickableLidOnTable) clickableLidOnTable.SetActive(true); 
+        if (clickableLidOnTable) clickableLidOnTable.SetActive(true);
 
         canPlayerClick = true;
         currentRequiredIngredient = IngredientType.PotLid;
 
-        yield return new WaitUntil(() => isStepComplete); 
+        yield return new WaitUntil(() => isStepComplete);
         isStepComplete = false;
 
         if (clickableLidOnTable) clickableLidOnTable.SetActive(false);
@@ -251,6 +294,12 @@ public class CookingGameManager : MonoBehaviour
     void WinGame()
     {
         Debug.Log("🎉 ทำขนมเนียลสำเร็จแล้ว!");
+        if (TestGameManager.Instance != null && TestGameManager.Instance.isTestMode)
+        {
+            StopAllAudio(); // หยุดเสียงก่อนจบโหมดสอบ
+            TestGameManager.Instance.FinishExam();
+            return; 
+        }
 
         if (winPanel != null) winPanel.SetActive(true);
 
@@ -272,6 +321,10 @@ public class CookingGameManager : MonoBehaviour
     {
         // [แทรก] เสียงคลิกก่อนเปลี่ยนฉาก
         if (sfxSource != null && clickSfx != null) sfxSource.PlayOneShot(clickSfx);
+        
+        // สั่งหยุดทุกเสียงก่อนเปลี่ยนฉาก
+        StopAllAudio();
+        
         SceneManager.LoadScene(nextSceneName);
     }
 }

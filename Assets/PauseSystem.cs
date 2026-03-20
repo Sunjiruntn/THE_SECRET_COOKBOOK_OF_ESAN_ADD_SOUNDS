@@ -12,8 +12,8 @@ public class PauseSystem : MonoBehaviour
     // ==========================================
 
     [Header("UI Components")]
-    public GameObject pausePanel;  
-    public GameObject pauseButton; 
+    public GameObject pausePanel;
+    public GameObject pauseButton;
 
     [Header("Scene Names")]
     public string mainMenuScene = "MainMenu";
@@ -75,10 +75,16 @@ public class PauseSystem : MonoBehaviour
 
     public void GoToMainMenu()
     {
-        // [แทรก] เล่นเสียงก่อนเปลี่ยนฉาก
         PlayClickSound();
+        Time.timeScale = 1f;
 
-        Time.timeScale = 1f; 
+        // ✅ [แทรกตรงนี้] สั่งหาตัวเล่นเสียงในฉากทั้งหมด แล้วบังคับปิด!
+        AudioSource[] allAudioSources = FindObjectsOfType<AudioSource>();
+        foreach (AudioSource audio in allAudioSources)
+        {
+            audio.Stop();
+        }
+
         SceneManager.LoadScene(mainMenuScene);
     }
 
@@ -86,8 +92,12 @@ public class PauseSystem : MonoBehaviour
     {
         // [แทรก] เล่นเสียงก่อนเปลี่ยนฉาก
         PlayClickSound();
-
-        Time.timeScale = 1f; 
+        AudioSource[] allAudioSources = FindObjectsOfType<AudioSource>();
+        foreach (AudioSource audio in allAudioSources)
+        {
+            audio.Stop();
+        }
+        Time.timeScale = 1f;
         SceneManager.LoadScene(mapSelectScene);
     }
 

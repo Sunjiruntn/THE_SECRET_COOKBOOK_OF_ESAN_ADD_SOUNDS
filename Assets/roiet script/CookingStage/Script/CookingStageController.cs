@@ -8,7 +8,7 @@ using System.Linq;
 using UnityEngine.SceneManagement;
 public class CookingStageController : MonoBehaviour
 {
-    
+
     public string nextSceneName = "MiniGame1Mukda";
     public int provinceIndex = 0;
     // ===== Helpers: Raycast control =====
@@ -23,7 +23,21 @@ public class CookingStageController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            LogRaycastUnderPointer(); // คลิกซ้ายจะแสดงรายชื่อวัตถุที่รับเรย์แคสต์
+            LogRaycastUnderPointer();
+        }
+
+
+        if (TestGameManager.Instance != null && TestGameManager.Instance.isTestMode)
+        {
+            if (Grandma_FullBody != null && Grandma_FullBody.activeInHierarchy)
+                Grandma_FullBody.SetActive(false);
+
+            if (Grandma_BehindTable != null && Grandma_BehindTable.activeInHierarchy)
+                Grandma_BehindTable.SetActive(false);
+
+            // ดักปิดกรอบข้อความคำใบ้ด้วย เผื่อมันเด้งมาพร้อมคุณย่า
+            if (instructionText != null && instructionText.gameObject.activeInHierarchy)
+                instructionText.gameObject.SetActive(false);
         }
     }
 
@@ -113,6 +127,7 @@ public class CookingStageController : MonoBehaviour
     }
 
     Step step;
+    private bool isPoundingLocked = false;
 
     // ========== Lifecycle ==========
     void Awake()
@@ -121,6 +136,11 @@ public class CookingStageController : MonoBehaviour
         if (CoveredBowl) CoveredBowl.SetActive(false);
         if (FilteredBowl) FilteredBowl.SetActive(false);
 
+        if (PotFinalButton)
+        {
+            PotFinalButton.gameObject.SetActive(false);
+            PotFinalButton.interactable = false;
+        }
         if (CoveredBowl)
         {
             var img = CoveredBowl.GetComponent<Image>();
@@ -131,6 +151,10 @@ public class CookingStageController : MonoBehaviour
 
     void Start()
     {
+        if (TestGameManager.Instance != null)
+        {
+            TestGameManager.Instance.ResetScore();
+        }
         Anim_Pour_num.SetActive(false);
         Anim_Drop_ch.SetActive(false);
         Anim_Drop_Veg.SetActive(false);
@@ -203,6 +227,23 @@ public class CookingStageController : MonoBehaviour
 
 
         GoTo(Step.Intro);
+        if (TestGameManager.Instance != null && TestGameManager.Instance.isTestMode)
+        {
+            // โหมดสอบ: ปิดคำใบ้ ปิดคุณย่า และเริ่มเกมทันที
+            if (instructionText) instructionText.gameObject.SetActive(false);
+            if (Grandma_FullBody) Grandma_FullBody.SetActive(false);
+            if (Grandma_BehindTable) Grandma_BehindTable.SetActive(false);
+
+            SetButtons(true, true, true, true, true, true, true); // เปิดปุ่มรอไว้
+            step = Step.PutMeatToMortar; // ข้ามไปขั้นทำอาหารเลย
+        }
+        else
+        {
+            // โหมดปกติ: ให้คุณย่าเล่าเรื่องตามเดิม
+            GoTo(Step.Intro);
+        }
+
+
         AssertRefs();
     }
 
@@ -508,6 +549,7 @@ public class CookingStageController : MonoBehaviour
             HandleWrongStep();
             return;
         }
+        if (TestGameManager.Instance != null) TestGameManager.Instance.RecordSuccess(); // [เพิ่ม] บวกคะแนน!
 
         StartCoroutine(CoPlayDropAnim(Anim_Drop_ch, 1.5f));
         // ครก: จากว่าง -> มีอกปู
@@ -533,11 +575,15 @@ public class CookingStageController : MonoBehaviour
 
     void OnMortarClicked()
     {
+        if (isPoundingLocked) return;
         if (step != Step.PoundCrabMeat)
         {
             HandleWrongStep();
             return;
         }
+        if (MortarButton) MortarButton.interactable = false;
+        if (PestleButton) PestleButton.interactable = false;
+        if (TestGameManager.Instance != null) TestGameManager.Instance.RecordSuccess(); // [เพิ่ม] บวกคะแนน!
         StartCoroutine(CoPound());
     }
 
@@ -548,6 +594,7 @@ public class CookingStageController : MonoBehaviour
             HandleWrongStep();
             return;
         }
+        if (TestGameManager.Instance != null) TestGameManager.Instance.RecordSuccess(); // [เพิ่ม] บวกคะแนน!
         StartCoroutine(CoPound());
     }
     bool waterAdded = false;
@@ -558,6 +605,8 @@ public class CookingStageController : MonoBehaviour
             HandleWrongStep();
             return;
         }
+        if (BowlFilterButton) BowlFilterButton.interactable = false;
+        if (TestGameManager.Instance != null) TestGameManager.Instance.RecordSuccess(); // [เพิ่ม] บวกคะแนน!
         StartCoroutine(CoFilter());
     }
     // ฟังก์ชันเล่าเรื่องของคุณย่า (Intro)
@@ -634,6 +683,7 @@ public class CookingStageController : MonoBehaviour
             BringClickableOnTop(BowlFilterButton.gameObject);
         }
 
+
         // แสดงข้อความสอนระหว่างกรอง
         SetInstruction("กำลังกรองน้ำปู...");
 
@@ -692,7 +742,7 @@ public class CookingStageController : MonoBehaviour
             HandleWrongStep();
             return;
         }
-
+        if (TestGameManager.Instance != null) TestGameManager.Instance.RecordSuccess(); // [เพิ่ม] บวกคะแนน!
         // เปลี่ยนขั้นไป AddCrabFatAndReduce
         GoTo(Step.AddCrabFatAndReduce);
 
@@ -708,7 +758,7 @@ public class CookingStageController : MonoBehaviour
             HandleWrongStep();
             yield break;
         }
-
+        if (TestGameManager.Instance != null) TestGameManager.Instance.RecordSuccess(); // [เพิ่ม] บวกคะแนน!
         Debug.Log("[CLICK] BowlVegButton -> AddVegAndSeason");
         StartCoroutine(CoPlayDropAnim(Anim_Drop_Veg, 1.0f));
         // 2. แสดงผลหม้อใส่ผัก
@@ -748,7 +798,7 @@ public class CookingStageController : MonoBehaviour
 
         Debug.Log("[CLICK] BowlSeasoningButton -> Start waiting...");
 
-
+        if (TestGameManager.Instance != null) TestGameManager.Instance.RecordSuccess(); // [เพิ่ม] บวกคะแนน!
         // 🔒 ปิดปุ่มวัตถุดิบทุกอย่างทันที! (ผู้เล่นจะได้กดอย่างอื่นไม่ได้)
         SetButtons(false, false, false, false, false, false, false);
 
@@ -773,7 +823,11 @@ public class CookingStageController : MonoBehaviour
     IEnumerator CoShowCardSequence()
     {
         Debug.Log("[CLICK] Final Pot -> Show Card");
-
+        if (TestGameManager.Instance != null && TestGameManager.Instance.isTestMode)
+        {
+            TestGameManager.Instance.FinishExam();
+            yield break; // หยุดการทำงานตรงนี้เลย ไม่ต้องโชว์การ์ด ไม่ต้องเปลี่ยนฉากเอง
+        }
         // ✅ 1. แสดงข้อความก่อนทันที
         SetInstruction("ลาบปูหอม ๆ พร้อมรับประทานจ้า! (จบเกม)");
 
@@ -797,9 +851,14 @@ public class CookingStageController : MonoBehaviour
                 actionButton.onClick.RemoveAllListeners();
                 actionButton.onClick.AddListener(() =>
                 {
+                    Debug.Log("🔘 กดปุ่ม Action Button แล้ว!");
                     // โหลดซีน Cookingstage
-                    SceneManager.LoadScene("MiniGame1Mukda");
+                    SceneManager.LoadScene("TutorialScene");
                 });
+            }
+            else
+            {
+                Debug.LogError("❌ หา actionButton ไม่เจอ! ");
             }
         }
 
@@ -1070,7 +1129,18 @@ public class CookingStageController : MonoBehaviour
     void HandleWrongStep()
     {
         Debug.Log("🚨 WRONG STEP! Resetting...");
+        if (TestGameManager.Instance.isTestMode)
+        {
+            Debug.Log("[โหมดสอบ] กดผิด! จดคะแนนแล้ว และบังคับซ่อนคุณย่า");
 
+            // ✅ บังคับปิดคุณย่าและตัวหนังสืออีกรอบ! (กันมันแอบเด้งขึ้นมาเอง)
+            if (Grandma_FullBody != null) Grandma_FullBody.SetActive(false);
+            if (Grandma_BehindTable != null) Grandma_BehindTable.SetActive(false);
+            if (instructionText != null) instructionText.gameObject.SetActive(false);
+
+            // ออกจากฟังก์ชันไปเลย ปล่อยโต๊ะทำอาหารไว้เหมือนเดิม
+            return;
+        }
         // 1. ปิดการคลิกทุกปุ่มชั่วคราว กันผู้เล่นกดรัว
         SetButtonsAll(false);
 
@@ -1091,7 +1161,7 @@ public class CookingStageController : MonoBehaviour
     IEnumerator CoResetToStart(float delay)
     {
         yield return new WaitForSeconds(delay);
-
+        isPoundingLocked = false;
         // --- 1. ล้างกระดาน (เหมือนเดิม) ---
         ShowOnly(Pot_Empty, Pot_WithWater, Pot_Boiling, Pot_WithCrabFat,
                  Pot_BoilingFat, Pot_Reducing, Pot_AddVet, Pot_Addseason, Pot_Final);

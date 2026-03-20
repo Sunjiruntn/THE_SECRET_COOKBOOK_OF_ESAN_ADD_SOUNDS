@@ -4,24 +4,24 @@ using TMPro;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.SceneManagement; // เพิ่มสำหรับการโหลดซีน
+using UnityEngine.SceneManagement;
 
 public class CookingInstructorManager : MonoBehaviour
 {
     [Header("Game Progression")]
     public string nextSceneName = "RiceHarvestScene";
-    private int provinceIndex = 3;
+    private int provinceIndex = 1;
 
     // =========================================================================
     // [NEW] AUDIO SETUP
     // =========================================================================
     [Header("Audio Settings")]
-    public AudioSource voiceAudioSource;   // สำหรับเสียงบรรยาย
-    public AudioSource musicAudioSource;   // สำหรับดนตรีพื้นหลัง
-    public AudioSource sfxAudioSource;     // สำหรับเสียงคลิก
-    public AudioClip introVoiceClip;       // ไฟล์เสียงแนะนำด่าน
-    public AudioClip backgroundMusicClip;  // ไฟล์ดนตรีพื้นหลัง
-    public AudioClip clickSFXClip;         // ไฟล์เสียงคลิก
+    public AudioSource voiceAudioSource;
+    public AudioSource musicAudioSource;
+    public AudioSource sfxAudioSource;
+    public AudioClip introVoiceClip;
+    public AudioClip backgroundMusicClip;
+    public AudioClip clickSFXClip;
 
     // =========================================================================
     // [1] ENUMS & STATES
@@ -114,9 +114,9 @@ public class CookingInstructorManager : MonoBehaviour
     public Sprite bowl_Sesame_Added_Final;
     public Sprite bowl_Final_Mixed;
 
-    // =========================================================================
-    // [3] INITIALIZATION & UPDATE
-    // =========================================================================
+    [Header("Success UI")]
+    public GameObject successPanel;
+    public Button successNextButton;
 
     void Start()
     {
@@ -139,19 +139,46 @@ public class CookingInstructorManager : MonoBehaviour
             grandmaOriginalSprite = grandmaSpriteRenderer.sprite;
         }
 
-        // เริ่มต้นจัดการเสียง
         StartCoroutine(HandleIntroAudioAndMusic());
         StartCoroutine(StartIntroSequence());
+
+        if (successPanel != null)
+            successPanel.SetActive(false);
+
+        if (successNextButton != null)
+            successNextButton.onClick.AddListener(OnSuccessNextButtonClicked);
     }
 
-    // จัดการเสียงแนะนำจบแล้วต่อด้วยเพลงพื้นหลัง
+    // =========================================================================
+    // เพิ่มฟังก์ชันใหม่เพื่อหยุดเสียงทั้งหมด (ไม่กระทบ logic เดิม)
+    // =========================================================================
+    private void StopAllAudio()
+    {
+        if (voiceAudioSource != null)
+        {
+            voiceAudioSource.Stop();
+            voiceAudioSource.clip = null;
+        }
+
+        if (musicAudioSource != null)
+        {
+            musicAudioSource.Stop();
+            musicAudioSource.clip = null;
+            musicAudioSource.loop = false;
+        }
+
+        if (sfxAudioSource != null)
+        {
+            sfxAudioSource.Stop();
+        }
+    }
+
     IEnumerator HandleIntroAudioAndMusic()
     {
         if (voiceAudioSource != null && introVoiceClip != null)
         {
             voiceAudioSource.clip = introVoiceClip;
             voiceAudioSource.Play();
-            // รอจนกว่าเสียงแนะนำจะจบ
             yield return new WaitWhile(() => voiceAudioSource.isPlaying);
         }
 
@@ -167,7 +194,7 @@ public class CookingInstructorManager : MonoBehaviour
     {
         if (currentStep == CookingStep.INTRO && Input.GetMouseButtonDown(0) && isIntroFinished)
         {
-            PlayClickSound(); // เล่นเสียงคลิก
+            PlayClickSound();
             if (dialogueCoroutine != null) StopCoroutine(dialogueCoroutine);
             dialogueCoroutine = null;
             StartNextStep(isNext: true);
@@ -192,7 +219,7 @@ public class CookingInstructorManager : MonoBehaviour
                  currentStep == CookingStep.STEP_3_MIX_LIQUIDS ||
                  currentStep == CookingStep.STEP_4_MIX_FINAL) && !errorPanel.activeSelf)
             {
-                PlayClickSound(); // เล่นเสียงคลิกเมื่อกดผสม
+                PlayClickSound();
                 mixingCount++;
                 instructionText.text = $"Action: คลิกที่ชาม ( {mixingCount} / 5 ครั้ง)";
 
@@ -226,10 +253,6 @@ public class CookingInstructorManager : MonoBehaviour
         }
     }
 
-    // =========================================================================
-    // [4] 🎬 GRANDMA HAPPY ANIMATION
-    // =========================================================================
-
     IEnumerator PlayGrandmaHappyAnimation()
     {
         if (grandmaHappySprites == null || grandmaHappySprites.Length == 0 || grandmaSpriteRenderer == null)
@@ -255,6 +278,13 @@ public class CookingInstructorManager : MonoBehaviour
 
     IEnumerator SuccessSequence()
     {
+        if (IsTesting())
+        {
+            yield return new WaitForSeconds(1f);
+            TestGameManager.Instance.FinishExam();
+            yield break;
+        }
+
         yield return StartCoroutine(TypeDialogue("พร้อมเสิร์ฟเด้อหล่า! ข้าวโจ้โรยงา เสร็จแล้ว ลูกเฮ็ดได้ดีหลาย!"));
         yield return new WaitForSeconds(1.5f);
         yield return StartCoroutine(TypeDialogue("ข้าวโจ้โรยงานี้เป็นขนมหวานพื้นบ้านอีสาน ที่คนขอนแก่นเฮานิยมเฮ็ดกินในงานบุญงานเทศกาลเด้อ"));
@@ -269,14 +299,11 @@ public class CookingInstructorManager : MonoBehaviour
             GameDataController.Instance.SaveGame();
         }
 
-        // รออีกเล็กน้อยเพื่อให้ผู้เล่นได้เห็นความสำเร็จ แล้วโหลดซีนถัดไปทันที
-        yield return new WaitForSeconds(2f);
-        SceneManager.LoadScene(nextSceneName);
+        if (successPanel != null)
+        {
+            successPanel.SetActive(true);
+        }
     }
-
-    // =========================================================================
-    // [5] GAME FLOW & STATE MANAGEMENT
-    // =========================================================================
 
     private IEnumerator DoType(string message)
     {
@@ -290,6 +317,13 @@ public class CookingInstructorManager : MonoBehaviour
 
     private IEnumerator TypeDialogue(string message)
     {
+        if (IsTesting())
+        {
+            dialogueText.text = "";
+            instructionText.text = "";
+            yield break;
+        }
+
         if (dialogueCoroutine != null) StopCoroutine(dialogueCoroutine);
         dialogueCoroutine = StartCoroutine(DoType(message));
         yield return dialogueCoroutine;
@@ -336,9 +370,17 @@ public class CookingInstructorManager : MonoBehaviour
             StopCoroutine(dialogueCoroutine);
             dialogueCoroutine = null;
         }
+        UpdateInstruction("");
         dialogueText.text = "";
         instructionText.text = "";
 
+        if (IsTesting() && currentStep != CookingStep.INTRO)
+        {
+            if (TestGameManager.Instance != null)
+            {
+                TestGameManager.Instance.RecordSuccess();
+            }
+        }
         if (isNext) currentStep = GetNextStep(currentStep);
 
         mixingCount = 0;
@@ -349,7 +391,7 @@ public class CookingInstructorManager : MonoBehaviour
         {
             case CookingStep.STEP_1_PUMPKIN_DRAG:
                 StartCoroutine(TypeDialogue("ขั้นตอนที่ 1: เฮามานึ่งฟักทองกันก่อนเด้อ คลิกที่ฟักทองดิบเพื่อนำไปใส่ในหวดเลย"));
-                instructionText.text = "Action: คลิกที่ฟักทองดิบ";
+                UpdateInstruction("Action: คลิกที่ฟักทองดิบ");
                 rawPumpkin.isClickable = true;
                 break;
 
@@ -359,31 +401,31 @@ public class CookingInstructorManager : MonoBehaviour
 
             case CookingStep.STEP_1_PUMPKIN_CLICK:
                 StartCoroutine(TypeDialogue("ฟักทองสุกแล้ว! คลิกที่ฟักทองสุกเพื่อนำมาใช้ผสมได้เลยหล่า"));
-                instructionText.text = "Action: คลิกที่ฟักทองสุก";
+                UpdateInstruction("Action: คลิกที่ฟักทองสุก");
                 steamedPumpkinFloat.isClickable = true;
                 steamedPumpkinFloat.gameObject.SetActive(true);
                 break;
 
             case CookingStep.STEP_2_DRAG_RICE:
                 StartCoroutine(TypeDialogue("ขั้นตอนที่ 2: ลากข้าวเหนียวที่ยายนึ่งไว้แล้วในติบ ใส่ลงในชามใหญ่ก่อนเลย"));
-                instructionText.text = "Action: ลากข้าวเหนียวในกระติบ วางบนชาม";
+                UpdateInstruction("Action: ลากข้าวเหนียวในกระติบ วางบนชาม");
                 stickyRice.isDraggable = true;
                 break;
 
             case CookingStep.STEP_2_DRAG_PUMPKIN:
                 StartCoroutine(TypeDialogue("เก่งหลายลุกหล่า! บัดนี่ลากฟักทองสุกที่เตรียมไว้เทิงโต๊ะใส่ตามลงไปเลย"));
-                instructionText.text = "Action: ลากฟักทองสุก วางบนชาม";
+                UpdateInstruction("Action: ลากฟักทองสุก วางบนชาม");
                 steamedPumpkinFloat.isDraggable = true;
                 break;
 
             case CookingStep.STEP_2_MIX_BASE:
                 StartCoroutine(TypeDialogue("คลุกให้ข้าวเหนียวกับฟักทองเข้ากัน"));
-                instructionText.text = "Action: คลิกที่ชาม (0 / 5 ครั้ง)";
+                UpdateInstruction("Action: คลิกที่ชาม (0 / 5 ครั้ง)");
                 break;
 
             case CookingStep.STEP_3_ADD_LIQUIDS_1_COCONUT:
                 StartCoroutine(TypeDialogue("ขั้นตอนที่ 3: เติมความหอมมัน ใส่ 'กะทิ' ก่อนเลยหล่า"));
-                instructionText.text = "Action: คลิกที่กะทิ";
+                UpdateInstruction("Action: คลิกที่กะทิ");
                 coconutMilk.isClickable = true;
                 salt.isClickable = true;
                 sugarSweetener.isClickable = true;
@@ -391,7 +433,7 @@ public class CookingInstructorManager : MonoBehaviour
 
             case CookingStep.STEP_3_ADD_LIQUIDS_2_SALT:
                 StartCoroutine(TypeDialogue("ต่อด้วยการตัดรส ใส่ 'เกลือ' จักหน่อยเพื่อรสชาติกลมกล่อม"));
-                instructionText.text = "Action: คลิกที่เกลือ";
+                UpdateInstruction("Action: คลิกที่เกลือ");
                 coconutMilk.isClickable = true;
                 salt.isClickable = true;
                 sugarSweetener.isClickable = true;
@@ -399,7 +441,7 @@ public class CookingInstructorManager : MonoBehaviour
 
             case CookingStep.STEP_3_ADD_LIQUIDS_3_SUGAR:
                 StartCoroutine(TypeDialogue("สุดท้ายความหวาน ใส่ 'น้ำตาล' เติมความหวานให้ลงโต"));
-                instructionText.text = "Action: คลิกที่น้ำตาล";
+                UpdateInstruction("Action: คลิกที่น้ำตาล");
                 coconutMilk.isClickable = true;
                 salt.isClickable = true;
                 sugarSweetener.isClickable = true;
@@ -407,26 +449,26 @@ public class CookingInstructorManager : MonoBehaviour
 
             case CookingStep.STEP_3_MIX_LIQUIDS:
                 StartCoroutine(TypeDialogue("คลุกเพื่อให้น้ำกะทิซึมเข้าเนื้อ"));
-                instructionText.text = "Action: คลิกที่ชาม (0 / 5 ครั้ง)";
+                UpdateInstruction("Action: คลิกที่ชาม (0 / 5 ครั้ง)");
                 break;
 
             case CookingStep.STEP_4_ADD_COCONUT:
                 StartCoroutine(TypeDialogue("ขั้นตอนที่ 4: ใส่ 'บักพร้าวขูด' ลงไปเลยหล่า"));
-                instructionText.text = "Action: คลิกที่มะพร้าวขูด";
+                UpdateInstruction("Action: คลิกที่มะพร้าวขูด");
                 shreddedCoconut.isClickable = true;
                 sesameSeeds.isClickable = true;
                 break;
 
             case CookingStep.STEP_4_ADD_SESAME:
                 StartCoroutine(TypeDialogue("ดีมากหล่า! สุดท้ายเด้อเพิ่มความหอมด้วย 'งาคั่ว' "));
-                instructionText.text = "Action: คลิกที่งาขาวคั่ว";
+                UpdateInstruction("Action: คลิกที่งาขาวคั่ว");
                 shreddedCoconut.isClickable = true;
                 sesameSeeds.isClickable = true;
                 break;
 
             case CookingStep.STEP_4_MIX_FINAL:
                 StartCoroutine(TypeDialogue("คลุกให้ทุกอย่างเข้ากันดี"));
-                instructionText.text = "Action: คลิกที่ชาม (0 / 5 ครั้ง)";
+                UpdateInstruction("Action: คลิกที่ชาม (0 / 5 ครั้ง)");
                 break;
 
             case CookingStep.GAME_OVER_SUCCESS:
@@ -462,10 +504,6 @@ public class CookingInstructorManager : MonoBehaviour
         }
     }
 
-    // =========================================================================
-    // [6] INTERACTION HANDLERS
-    // =========================================================================
-
     public void HandleDragDrop(IngredientID draggedID, IngredientID targetID)
     {
         bool isCorrect = false;
@@ -487,13 +525,21 @@ public class CookingInstructorManager : MonoBehaviour
 
         if (isCorrect)
         {
-            PlayClickSound(); // เล่นเสียงเมื่อลากวางถูก
+            PlayClickSound();
             StartNextStep();
         }
         else
         {
             if (targetID == IngredientID.MIXING_BOWL) FindIngredient(draggedID)?.ResetPosition();
-            ShowErrorPopup("❌ เฮ้ดผิดเด้อ! ฟังใหม่อีกจักเทื่อ ");
+
+            if (IsTesting())
+            {
+                TestGameManager.Instance.RecordMistake(50);
+            }
+            else
+            {
+                ShowErrorPopup(" เฮ้ดผิดเด้อ! ฟังใหม่อีกจักเทื่อ ");
+            }
         }
     }
 
@@ -513,25 +559,54 @@ public class CookingInstructorManager : MonoBehaviour
         if (isCorrectClick)
         {
             PlayClickSound();
-            // จัดการ Visual เฉพาะจุด
-            if (currentStep == CookingStep.STEP_1_PUMPKIN_DRAG) { rawPumpkin.gameObject.SetActive(false); }
-            else if (currentStep == CookingStep.STEP_3_ADD_LIQUIDS_1_COCONUT) { coconutMilk.gameObject.SetActive(false); mixingBowlRenderer.sprite = bowl_CoconutMilk_Added; }
-            else if (currentStep == CookingStep.STEP_3_ADD_LIQUIDS_2_SALT) { salt.gameObject.SetActive(false); mixingBowlRenderer.sprite = bowl_Salt_Added; }
-            else if (currentStep == CookingStep.STEP_3_ADD_LIQUIDS_3_SUGAR) { sugarSweetener.gameObject.SetActive(false); mixingBowlRenderer.sprite = bowl_Sugar_Added; }
-            else if (currentStep == CookingStep.STEP_4_ADD_COCONUT) { shreddedCoconut.gameObject.SetActive(false); mixingBowlRenderer.sprite = bowl_Coconut_Added_Final; }
-            else if (currentStep == CookingStep.STEP_4_ADD_SESAME) { sesameSeeds.gameObject.SetActive(false); mixingBowlRenderer.sprite = bowl_Sesame_Added_Final; }
-            
+
+            if (currentStep == CookingStep.STEP_1_PUMPKIN_DRAG)
+            {
+                rawPumpkin.gameObject.SetActive(false);
+            }
+            else if (currentStep == CookingStep.STEP_3_ADD_LIQUIDS_1_COCONUT)
+            {
+                coconutMilk.gameObject.SetActive(false);
+                mixingBowlRenderer.sprite = bowl_CoconutMilk_Added;
+            }
+            else if (currentStep == CookingStep.STEP_3_ADD_LIQUIDS_2_SALT)
+            {
+                salt.gameObject.SetActive(false);
+                mixingBowlRenderer.sprite = bowl_Salt_Added;
+            }
+            else if (currentStep == CookingStep.STEP_3_ADD_LIQUIDS_3_SUGAR)
+            {
+                sugarSweetener.gameObject.SetActive(false);
+                mixingBowlRenderer.sprite = bowl_Sugar_Added;
+            }
+            else if (currentStep == CookingStep.STEP_4_ADD_COCONUT)
+            {
+                shreddedCoconut.gameObject.SetActive(false);
+                mixingBowlRenderer.sprite = bowl_Coconut_Added_Final;
+            }
+            else if (currentStep == CookingStep.STEP_4_ADD_SESAME)
+            {
+                sesameSeeds.gameObject.SetActive(false);
+                mixingBowlRenderer.sprite = bowl_Sesame_Added_Final;
+            }
+
             StartNextStep();
         }
         else if (!errorPanel.activeSelf)
         {
-            ShowErrorPopup("❌ ผิดขั้นตอน! คุณยายบอกให้ทำขั้นตอน " + GetExpectedInstruction(currentStep) + " ก่อนจ้ะ");
+            if (IsTesting())
+            {
+                if (TestGameManager.Instance != null)
+                {
+                    TestGameManager.Instance.RecordMistake(50);
+                }
+            }
+            else
+            {
+                ShowErrorPopup(" ผิดขั้นตอน! คุณยายบอกให้ทำขั้นตอน " + GetExpectedInstruction(currentStep) + " ก่อนจ้ะ");
+            }
         }
     }
-
-    // =========================================================================
-    // [7] UTILITIES & CORE LOGIC
-    // =========================================================================
 
     IEnumerator PumpkinSteamingSequence()
     {
@@ -650,4 +725,44 @@ public class CookingInstructorManager : MonoBehaviour
     }
 
     public bool IsGameOver() => currentStep == CookingStep.GAME_OVER_SUCCESS;
+
+    private bool IsTesting()
+    {
+        return TestGameManager.Instance != null && TestGameManager.Instance.isTestMode;
+    }
+
+    private void UpdateInstruction(string message)
+    {
+        if (IsTesting())
+        {
+            instructionText.text = "";
+        }
+        else
+        {
+            instructionText.text = message;
+        }
+    }
+
+    // =========================================================================
+    // แก้ไขจุดนี้เพื่อหยุดเสียงก่อนเปลี่ยน Scene
+    // =========================================================================
+    public void OnSuccessNextButtonClicked()
+    {
+        // หยุดเสียงทั้งหมดก่อนโหลดฉากใหม่
+        StopAllAudio();
+
+        if (IsTesting())
+        {
+            TestGameManager.Instance.FinishExam();
+            return;
+        }
+
+        SceneManager.LoadScene(nextSceneName);
+    }
+
+    // Optional: เพิ่มการป้องกันกรณี object ถูกทำลาย (เช่น เปลี่ยน scene แบบอื่น)
+    void OnDestroy()
+    {
+        StopAllAudio();
+    }
 }

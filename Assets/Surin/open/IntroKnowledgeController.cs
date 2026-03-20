@@ -26,7 +26,7 @@ public class IntroKnowledgeController : MonoBehaviour
     public AudioClip introVoice;         // เสียงแนะนำตอนเริ่ม (มีไฟล์เดียว)
 
     private int currentIndex = 0;
-    private bool isVoiceFinished = false;
+    // private bool isVoiceFinished = false; // (ไม่ได้ถูกใช้งานในโค้ดเดิม)
 
     void Start()
     {
@@ -100,9 +100,23 @@ public class IntroKnowledgeController : MonoBehaviour
         ShowSentence();
     }
 
+    // ฟังก์ชันสำหรับสั่งหยุดเสียงทั้งหมด
+    void StopAllAudio()
+    {
+        if (bgmSource != null) bgmSource.Stop();
+        if (sfxSource != null) sfxSource.Stop();
+        if (voiceSource != null) voiceSource.Stop();
+    }
+
     void GoToMiniGame()
     {
         Debug.Log("จบการให้ความรู้... กำลังไปที่ " + nextSceneName);
+        
+        // --- ส่วนที่เพิ่มเข้ามาเพื่อแก้ปัญหาสวนทางกันของเสียง ---
+        StopAllAudio(); // หยุดเสียงทั้งหมดก่อนเปลี่ยนฉาก
+        StopAllCoroutines(); // หยุด Coroutine ที่อาจจะกำลังรอเปิด BGM อยู่
+        // ----------------------------------------------
+
         SceneManager.LoadScene(nextSceneName);
     }
 }

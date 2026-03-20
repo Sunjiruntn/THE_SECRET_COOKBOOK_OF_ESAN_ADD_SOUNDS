@@ -17,7 +17,7 @@ public class GrandmaTutorialManager : MonoBehaviour {
     [Header("Audio Settings")]
     public AudioSource voiceSource;      // สำหรับเสียงแนะนำและเสียงคลิก (SFX)
     public AudioSource musicSource;      // สำหรับเพลงพื้นหลัง
-    public AudioClip introVoiceClip;     // ไฟล์เสียงแนะนำด่าน (เล่นครั้งแรก)
+    public AudioClip introVoiceClip;     // ไฟล์เสียงแนะนำด่าน
     public AudioClip clickSoundClip;     // ไฟล์เสียงตอนกดคลิกเปลี่ยนบทพูด
 
     [Header("Dialogue Content")]
@@ -38,6 +38,7 @@ public class GrandmaTutorialManager : MonoBehaviour {
     private bool isReturningFromFailure = false;
 
     void Start() {
+        // ตรวจสอบว่าเฟลมาจากด่านฟักทองหรือไม่
         if (PlayerPrefs.GetInt("HasFailedPumpkin", 0) == 1)
         {
             isReturningFromFailure = true; 
@@ -45,6 +46,7 @@ public class GrandmaTutorialManager : MonoBehaviour {
             tutorialLines = failureLines; 
         }
 
+        // ตั้งค่าตำแหน่งเริ่มต้นของยาย
         Vector3 startPosition = new Vector3(-10f, grandmaObject.transform.position.y, 0f);
         grandmaObject.transform.position = startPosition;
         dialogueText.text = ""; 
@@ -70,8 +72,11 @@ public class GrandmaTutorialManager : MonoBehaviour {
         // 3. ยายลอยเข้าฉาก
         yield return StartCoroutine(GrandmaFloatIn());
 
-        // 4. เริ่มบทพูด
+        // 4. เริ่มบทพูด (รอจนจบทุกประโยค)
         yield return StartCoroutine(RunDialogue());
+
+        // --- [ส่วนที่แก้ไข] หยุดเสียงทุกอย่างก่อนเปลี่ยนฉาก ---
+        StopAllSounds();
 
         // 5. ไปฉากถัดไป
         SceneManager.LoadScene(nextSceneName);
@@ -98,7 +103,7 @@ public class GrandmaTutorialManager : MonoBehaviour {
             bool clicked = false;
             while (!clicked) {
                 if (Input.GetMouseButtonDown(0)) {
-                    // --- ส่วนที่เพิ่ม: เล่นเสียงคลิกเมื่อกดเมาส์ ---
+                    // เล่นเสียงคลิก
                     if (voiceSource != null && clickSoundClip != null) {
                         voiceSource.PlayOneShot(clickSoundClip);
                     }
@@ -111,5 +116,15 @@ public class GrandmaTutorialManager : MonoBehaviour {
         }
         
         dialogueText.text = "";
+    }
+
+    // ฟังก์ชันสำหรับสั่งหยุดเสียงทั้งหมดใน Manager นี้
+    private void StopAllSounds() {
+        if (musicSource != null) {
+            musicSource.Stop();
+        }
+        if (voiceSource != null) {
+            voiceSource.Stop();
+        }
     }
 }

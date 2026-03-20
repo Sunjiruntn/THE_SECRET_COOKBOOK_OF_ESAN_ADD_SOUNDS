@@ -1175,7 +1175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 403dd9c0d69f7ae4b9bb83501b6002ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  provinceIndex: 1
+  provinceIndex: 3
   nextSceneName: Mukdahan_Cooking
   bgmSource: {fileID: 665581904}
   sfxSource: {fileID: 665581903}

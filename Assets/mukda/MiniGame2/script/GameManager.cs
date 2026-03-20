@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
-using System.Collections; // ✅ จำเป็นต้องมีเพื่อใช้ Coroutine
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    public int provinceIndex = 1;
+    public int provinceIndex = 3;
     public string nextSceneName = "Mukdahan_Cooking";
     public static bool isRestart = false;
 
@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public AudioClip bgmClip;            
     public AudioClip clickSfx;           
     public AudioClip winSfx;             
-    public AudioClip loseSfx;            
+    public AudioClip loseSfx;             
     public AudioClip introVoice;         
 
     [Header("Game State")]
@@ -53,11 +53,9 @@ public class GameManager : MonoBehaviour
         burntCount = 0;
         Time.timeScale = 1;
 
-        // ✅ เรียก Coroutine เพื่อรอให้เสียงพูดจบก่อนค่อยเปิด BGM
         StartCoroutine(PlayVoiceThenBGM());
     }
 
-    // --- ฟังก์ชันใหม่: รอให้เสียงพากย์จบก่อนแล้วเพลงค่อยดัง ---
     IEnumerator PlayVoiceThenBGM()
     {
         if (voiceSource != null && introVoice != null)
@@ -65,16 +63,14 @@ public class GameManager : MonoBehaviour
             voiceSource.clip = introVoice;
             voiceSource.Play();
 
-            // รอจนกว่า voiceSource จะเล่นจบ (เช็คจากความยาวไฟล์เสียง)
             yield return new WaitForSeconds(introVoice.length);
         }
 
-        // เมื่อเล่นเสียงจบ หรือถ้าไม่มีไฟล์เสียง ให้เริ่มเล่น BGM
         if (bgmSource != null && bgmClip != null)
         {
             bgmSource.clip = bgmClip;
             bgmSource.loop = true;
-            bgmSource.volume = 0.5f; // ตั้งความดังเริ่มต้น
+            bgmSource.volume = 0.5f;
             bgmSource.Play();
         }
     }
@@ -114,7 +110,9 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
         
         if (sfxSource != null && winSfx != null) sfxSource.PlayOneShot(winSfx);
-        if (bgmSource != null) bgmSource.volume = 0.2f; // เบา BGM ลงตอนชนะ
+
+        // หยุด BGM และลด volume ไม่ต้องทำแล้ว → จะหยุดทั้งหมดด้านล่าง
+        StopAllAudio();
 
         ShowEndGamePanel(true); 
     }
@@ -126,9 +124,31 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
         
         if (sfxSource != null && loseSfx != null) sfxSource.PlayOneShot(loseSfx);
-        if (bgmSource != null) bgmSource.Stop(); // หยุด BGM ตอนแพ้ (ถ้าต้องการ)
+
+        StopAllAudio();
 
         ShowEndGamePanel(false); 
+    }
+
+    // ฟังก์ชันใหม่ - หยุดและล้างเสียงทั้งหมด เพื่อไม่ให้หลุดไป Scene ถัดไป
+    private void StopAllAudio()
+    {
+        if (bgmSource != null)
+        {
+            bgmSource.Stop();
+            bgmSource.clip = null;     // ล้างคลิป (ป้องกัน memory leak เล็กน้อย)
+            bgmSource.loop = false;
+        }
+
+        if (voiceSource != null)
+        {
+            voiceSource.Stop();
+            voiceSource.clip = null;
+        }
+
+        // sfxSource ไม่ต้องหยุด เพราะส่วนใหญ่เป็น PlayOneShot อยู่แล้ว
+        // แต่ถ้าต้องการให้แน่ใจสุด ๆ ก็สามารถเพิ่มได้
+        // if (sfxSource != null) sfxSource.Stop();
     }
 
     void ShowEndGamePanel(bool isWin)
@@ -160,6 +180,10 @@ public class GameManager : MonoBehaviour
 
         isRestart = true;
         Time.timeScale = 1;
+
+        // หยุดเสียงก่อน reload scene เดียวกัน
+        StopAllAudio();
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -168,6 +192,10 @@ public class GameManager : MonoBehaviour
         if (sfxSource != null && clickSfx != null) sfxSource.PlayOneShot(clickSfx);
 
         Time.timeScale = 1; 
+
+        // หยุดเสียงก่อนเปลี่ยน Scene
+        StopAllAudio();
+
         SceneManager.LoadScene(nextSceneName);
     }
 
@@ -210,5 +238,11 @@ public class GameManager : MonoBehaviour
         {
             CheckWinCondition();
         }
+    }
+
+    // เพิ่มการป้องกันกรณี GameObject ถูกทำลาย (เช่น Scene unload)
+    void OnDestroy()
+    {
+        StopAllAudio();
     }
 }

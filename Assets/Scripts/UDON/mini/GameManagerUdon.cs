@@ -54,6 +54,13 @@ public class GameManagerUdon : MonoBehaviour
         if (winUI != null) winUI.SetActive(true);
         yield return new WaitForSeconds(2f);
 
+        // --- ส่วนที่แก้ไข: สั่งหยุดเสียงทั้งหมดก่อนเปลี่ยน Scene ---
+        if (sfxSource != null)
+        {
+            sfxSource.Stop(); // หยุดเสียงที่กำลังเล่นอยู่ทั้งหมดใน Source นี้
+        }
+        // ---------------------------------------------------
+
         // สำคัญ: บอก Script หลักว่าเก็บเสร็จแล้ว
         WashingGameManager.isBlackRiceDone = true;
 

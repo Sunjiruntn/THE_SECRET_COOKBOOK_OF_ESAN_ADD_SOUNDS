@@ -11,7 +11,7 @@ public class BlenderController : MonoBehaviour
     public GameObject winPanel;       
     public Button nextLevelButton;    
     public string nextSceneName = "Mukdahan_MiniGame2"; 
-    public int provinceIndex = 1;
+    public int provinceIndex = 3;
 
     // ==========================================================
     // NEW: AUDIO SYSTEM (ส่วนที่เพิ่มเข้าไป)
@@ -247,9 +247,9 @@ public class BlenderController : MonoBehaviour
     // ==========================================================
     public void ResetGame()
     {
+        StopAllAudioSources();  // หยุดและล้างเสียงทั้งหมดเมื่อรีเซ็ต
+
         StopAllCoroutines();
-        // หยุดเสียง SFX ทั้งหมดตอนรีเซ็ต
-        if (sfxSource) sfxSource.Stop();
 
         if (winPanel != null) winPanel.SetActive(false);
         currentSpeed = 0;
@@ -304,10 +304,53 @@ public class BlenderController : MonoBehaviour
         }
     }
 
+    // ==========================================================
+    // แก้ไขจุดเปลี่ยนฉาก → หยุดเสียงให้ครบก่อน
+    // ==========================================================
     public void GoToNextLevel()
     {
+        // หยุดและล้างทุกเสียงก่อนเปลี่ยนฉาก
+        StopAllAudioSources();
+
         if (sfxSource && clickSfx) sfxSource.PlayOneShot(clickSfx);
+
+        // รอเล็กน้อยเพื่อให้ได้ยินเสียงคลิก (ปรับ delay ได้ตามชอบ หรือลบออกก็ได้)
+        StartCoroutine(WaitAndLoadScene(0.25f));
+    }
+
+    private IEnumerator WaitAndLoadScene(float delay)
+    {
+        yield return new WaitForSeconds(delay);
         SceneManager.LoadScene(nextSceneName);
+    }
+
+    private void StopAllAudioSources()
+    {
+        // หยุดและรีเซ็ต BGM
+        if (bgmSource != null)
+        {
+            bgmSource.Stop();
+            bgmSource.clip = null;
+            bgmSource.volume = 1f;
+            bgmSource.loop = false;
+            bgmSource.pitch = 1f;
+        }
+
+        // หยุดและรีเซ็ต SFX (รวมเสียงปั่น)
+        if (sfxSource != null)
+        {
+            sfxSource.Stop();
+            sfxSource.clip = null;
+            sfxSource.loop = false;
+            sfxSource.pitch = 1f;
+        }
+
+        // หยุดเสียงพากย์ Intro
+        if (voiceSource != null)
+        {
+            voiceSource.Stop();
+            voiceSource.clip = null;
+        }
     }
 
     // ==========================================================
@@ -392,7 +435,7 @@ public class BlenderController : MonoBehaviour
     }
 
     // ==========================================================
-    // 6. BLENDING SEQUENCES & HELPERS (Logic เดิม ไม่แก้ไข)
+    // 6. BLENDING SEQUENCES & HELPERS
     // ==========================================================
 
     IEnumerator PandanBlendingSequence()

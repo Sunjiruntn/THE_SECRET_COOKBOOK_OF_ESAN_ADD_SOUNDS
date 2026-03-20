@@ -5,7 +5,7 @@ using System.Collections;
 
 public class PumpkinHarvester : MonoBehaviour
 {
-    private int provinceIndex = 3;
+    private int provinceIndex = 1;
     public string nextSceneName = "KitchenScene";
     // ต้องลาก GameObject ของ UI Image ที่สร้างไว้มาใส่ใน Inspector ของฟักทองทุกชิ้น
     public GameObject resultImageSuccess; // ลาก ResultImage_Success มาใส่
@@ -71,14 +71,14 @@ public class PumpkinHarvester : MonoBehaviour
         yield return new WaitForSeconds(2.0f);
 
         // 3. ปิดรูปภาพ (ถ้ายังอยู่ใน Scene นี้)
-        if (resultImageSuccess != null)
+      if (TestGameManager.Instance != null && TestGameManager.Instance.isTestMode)
         {
-            resultImageSuccess.SetActive(false);
+            TestGameManager.Instance.FinishExam();
         }
-
-        // 4. ทำลายวัตถุและโหลด Scene
-        Destroy(gameObject);
-        SceneManager.LoadScene(SUCCESS_SCENE);
+        else
+        {
+            SceneManager.LoadScene(nextSceneName); // วาร์ปไปด่าน KitchenScene 
+        }
     }
 
     // Coroutine จัดการความล้มเหลว (แสดงรูปภาพ -> หน่วงเวลา -> โหลด Scene)

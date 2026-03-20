@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement; // เพิ่มเผื่อไว้ใช้จัดการ Scene
 
 public class TutorialManager : MonoBehaviour
 {
@@ -12,22 +13,45 @@ public class TutorialManager : MonoBehaviour
     public TMP_Text dialogueText;
 
     [Header("Audio Settings")]
-    public AudioSource sfxSource;       // สำหรับเสียงคลิก
-    public AudioSource voiceSource;     // สำหรับเสียงแนะนำ (Voice Over)
-    public AudioSource bgmSource;       // สำหรับเพลงพื้นหลัง
-    public AudioClip clickSfx;          // เสียงกดข้าม
-    public AudioClip backgroundMusic;   // เพลง BGM
-    public AudioClip introductionVoice; // เสียงแนะนำที่มีเพียง 1 ไฟล์
+    public AudioSource sfxSource;       
+    public AudioSource voiceSource;     
+    public AudioSource bgmSource;       
+    public AudioClip clickSfx;          
+    public AudioClip backgroundMusic;   
+    public AudioClip introductionVoice; 
 
     [Header("BGM Volume Control")]
-    [Range(0f, 1f)] public float bgmLowVolume = 0.2f;    // ความดังเพลงตอนมีเสียงบรรยาย
-    [Range(0f, 1f)] public float bgmNormalVolume = 0.6f;  // ความดังเพลงตอนเล่นเกมปกติ
+    [Range(0f, 1f)] public float bgmLowVolume = 0.2f;    
+    [Range(0f, 1f)] public float bgmNormalVolume = 0.6f;  
 
     [Header("Content")]
     [TextArea(3, 5)]
     public string[] sentences;
 
     private int index = 0;
+
+    // --- ส่วนที่เพิ่มเข้าไปใหม่ เพื่อแก้ปัญหาเสียงทับซ้อน ---
+    void OnDisable()
+    {
+        StopAllSceneAudio();
+    }
+
+    void OnDestroy()
+    {
+        StopAllSceneAudio();
+    }
+
+    // ฟังก์ชันสำหรับสั่งหยุดเสียงทุกตัวใน Script นี้
+    void StopAllSceneAudio()
+    {
+        if (sfxSource != null) sfxSource.Stop();
+        if (voiceSource != null) voiceSource.Stop();
+        if (bgmSource != null) bgmSource.Stop();
+        
+        // บังคับให้ AudioSource ปล่อย Clip ทิ้งเพื่อคืน Memory (Optional)
+        if (bgmSource != null) bgmSource.clip = null; 
+    }
+    // --------------------------------------------------
 
     void Start()
     {
@@ -36,7 +60,6 @@ public class TutorialManager : MonoBehaviour
             EndTutorial();
             return;
         }
-
         InitializeTutorial();
     }
 
@@ -54,7 +77,6 @@ public class TutorialManager : MonoBehaviour
         tutorialPanel.SetActive(true);
         index = 0;
 
-        // 1. เล่นเพลง BGM เบาๆ รอไว้
         if (bgmSource != null && backgroundMusic != null)
         {
             bgmSource.clip = backgroundMusic;
@@ -63,7 +85,6 @@ public class TutorialManager : MonoBehaviour
             bgmSource.Play();
         }
 
-        // 2. เล่นเสียงแนะนำไฟล์เดียวตอนเริ่ม
         if (voiceSource != null && introductionVoice != null)
         {
             voiceSource.clip = introductionVoice;
@@ -81,8 +102,7 @@ public class TutorialManager : MonoBehaviour
             NextSentence();
         }
 
-        // (Option) ถ้าเสียงแนะนำจบก่อนที่คนจะกดจบ Tutorial ให้เร่งเพลงดังขึ้นอัตโนมัติ
-        if (IsTutorialActive && voiceSource != null && !voiceSource.isPlaying && bgmSource.volume < bgmNormalVolume)
+        if (IsTutorialActive && voiceSource != null && !voiceSource.isPlaying && bgmSource != null && bgmSource.volume < bgmNormalVolume)
         {
             bgmSource.volume = Mathf.Lerp(bgmSource.volume, bgmNormalVolume, Time.deltaTime);
         }
@@ -95,14 +115,12 @@ public class TutorialManager : MonoBehaviour
 
     public void NextSentence()
     {
-        // เล่นเสียงคลิกปุ่มทุกครั้งที่กด
         if (sfxSource != null && clickSfx != null)
         {
             sfxSource.PlayOneShot(clickSfx);
         }
 
         index++;
-
         if (index < sentences.Length)
         {
             ShowSentence();
@@ -118,10 +136,8 @@ public class TutorialManager : MonoBehaviour
         IsTutorialActive = false;
         tutorialPanel.SetActive(false);
 
-        // ถ้ากดจบก่อนที่เสียงแนะนำจะพูดจบ ให้หยุดเสียงพูด
         if (voiceSource != null) voiceSource.Stop();
 
-        // เร่งเสียงเพลงพื้นหลังให้ดังปกติ
         if (bgmSource != null)
         {
             bgmSource.volume = bgmNormalVolume;

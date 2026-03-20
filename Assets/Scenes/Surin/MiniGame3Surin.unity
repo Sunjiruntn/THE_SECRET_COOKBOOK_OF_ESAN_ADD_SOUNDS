@@ -212,8 +212,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 45
+  m_fontSizeBase: 45
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1484,7 +1484,7 @@ Transform:
   m_GameObject: {fileID: 286518731}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.44, y: 1.74, z: 0}
+  m_LocalPosition: {x: 3.3, y: 1.19, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1748,8 +1748,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 45
+  m_fontSizeBase: 45
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2281,15 +2281,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45
-  m_fontSizeBase: 45
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -2319,7 +2319,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -342.20044, y: 0, z: -349.25653, w: -116.41881}
+  m_margin: {x: -393.16092, y: 0, z: -420.60147, w: -116.41881}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2519,6 +2519,8 @@ GameObject:
   - component: {fileID: 715176101}
   - component: {fileID: 715176100}
   - component: {fileID: 715176102}
+  - component: {fileID: 715176104}
+  - component: {fileID: 715176103}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -2627,6 +2629,46 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &715176103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715176098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!223 &715176104
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715176098}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 550
+  m_TargetDisplay: 0
 --- !u!1 &760093968
 GameObject:
   m_ObjectHideFlags: 0
@@ -3601,7 +3643,7 @@ Transform:
   m_GameObject: {fileID: 1042848781}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.47, y: 0.81, z: 0}
+  m_LocalPosition: {x: 3.2, y: 0.35, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4534,12 +4576,13 @@ MonoBehaviour:
   winPanel: {fileID: 2045850664}
   nextLevelButton: {fileID: 715176102}
   nextSceneName: CookingStageSurin
-  provinceIndex: 2
+  provinceIndex: 4
   dialoguePanel: {fileID: 1717816322}
   dialogueText: {fileID: 663336886}
   introSentences:
-  - "\u0E21\u0E48\u0E17\u0E49\u0E14\u0E40\u0E01\u0E1C\u0E48\u0E40\u0E49"
-  - "\u0E14\u0E01\u0E49\u0E49\u0E49\u0E49\u0E49\u0E49\u0E49\u0E49\u0E49\u0E49\u0E49\u0E49\u0E49\u0E49\u0E49\u0E49\u0E2A\u0E2A\u0E2A\u0E2A\u0E2A\u0E2A\u0E2A\u0E2A\u0E2A\u0E2A\u0E2A\u0E2A\u0E2A\u0E2A\u0E2A\u0E2A\u0E2A\u0E2A"
+  - "\u0E16\u0E31\u0E14\u0E44\u0E1B\u0E40\u0E23\u0E32\u0E21\u0E32\u0E02\u0E39\u0E14\u0E21\u0E30\u0E1E\u0E23\u0E49\u0E32\u0E27\u0E17\u0E36\u0E19\u0E17\u0E36\u0E01\u0E14\u0E49\u0E27\u0E22\u0E21\u0E37\u0E2D\u0E41\u0E21\u0E27\u0E01\u0E31\u0E19"
+  - "\u0E42\u0E14\u0E22\u0E21\u0E30\u0E1E\u0E23\u0E49\u0E32\u0E27\u0E17\u0E36\u0E19\u0E17\u0E36\u0E01\u0E0A\u0E48\u0E27\u0E22\u0E43\u0E2B\u0E49\u0E02\u0E19\u0E21\u0E19\u0E38\u0E48\u0E21\u0E02\u0E36\u0E49\u0E19
+    \u0E44\u0E21\u0E48\u0E40\u0E2B\u0E19\u0E35\u0E22\u0E27 \u0E2B\u0E23\u0E37\u0E2D\u0E41\u0E02\u0E47\u0E07\u0E40\u0E01\u0E34\u0E19\u0E44\u0E1B"
   retrySentence: "\u0E22\u0E32\u0E22\u0E40\u0E2D\u0E32\u0E21\u0E30\u0E1E\u0E23\u0E49\u0E32\u0E27\u0E43\u0E2B\u0E21\u0E48\u0E21\u0E32\u0E40\u0E1B\u0E25\u0E35\u0E48\u0E22\u0E19\u0E43\u0E2B\u0E49\u0E41\u0E25\u0E49\u0E27
     \u0E02\u0E39\u0E14\u0E43\u0E2B\u0E21\u0E48\u0E40\u0E14\u0E49\u0E2D"
   whiteFlakesPS: {fileID: 2079444379}
@@ -11777,8 +11820,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2.9500122, y: 429.37}
-  m_SizeDelta: {x: -885.37, y: -858.73}
+  m_AnchoredPosition: {x: 52.200012, y: 375.81}
+  m_SizeDelta: {x: -780.97, y: -836.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1717816324
 MonoBehaviour:

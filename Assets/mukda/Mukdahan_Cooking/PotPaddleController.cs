@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class PotPaddleController : MonoBehaviour
 {
@@ -20,13 +21,18 @@ public class PotPaddleController : MonoBehaviour
 
     [Header("Stir Settings (Distance Based)")]
     public float distToStage2 = 40f;   // ระยะคนจาก 1 ไป 2
-    public float distToStage4 = 60f;   // ระยะคนจาก 3 ไป 4
-
+    public float distToStage4 = 60f;  // ระยะคนจาก 3 ไป 4
+    [Header("UI Feedback")]
+    public TextMeshProUGUI statusText;
     private float currentDist = 0f;
     private int currentStep = 1;      // เริ่มต้นที่สเตจ 1
     private bool canAddBeans = false; // สถานะว่ากดถั่วได้หรือยัง
     private bool beansAdded = false;  // สถานะว่าใส่ถั่วไปแล้วหรือยัง
     private Vector3 lastTipPos;
+
+    [Header("--- Save System Settings ---")]
+    public int provinceIndex = 3; // จังหวัดที่ 3
+    public string nextSceneName = "openSurin";
     void Awake()
     {
         // สั่งปิดขนมทุกสเตจทันทีที่เกมโหลด! (ไม่สนว่าจะติ๊กอะไรไว้ใน Inspector)
@@ -70,7 +76,12 @@ public class PotPaddleController : MonoBehaviour
         currentDist = 0f;
         canAddBeans = false;
         beansAdded = false;
-        // เปิดให้ Update ทำงาน
+        if (statusText != null)
+        {
+            statusText.gameObject.SetActive(true);
+            statusText.text = "กวนขนมในหม้อจนแป้งจับตัวเป็นเนื้อเดียวกัน กวนไปเรื่อยๆจนใกล้สุกระวังอย่าใช้ไฟแรงเพราะเกรงว่าจะไหม้ การกวนข้าวต้มโดยใช้เตาถ่าน ไฟไม่แรงมาก แล้วใช้ไฟร้อนเสมอกันจะทำให้ผิวข้าวต้มนุ่ม หอม";
+        }
+
         this.enabled = true;
     }
 
@@ -150,7 +161,11 @@ public class PotPaddleController : MonoBehaviour
             UpdatePaddleVisual(1);  // ไม้พายเริ่มเปื้อนแป้งดิบ
             canAddBeans = true;     // เปิดโหมดให้กดถั่วได้
             beanBowl.SetActive(true);
-            Debug.Log("ขนมหนืดแล้ว ใส่ถั่วได้เลย!");
+            if (statusText != null)
+            {
+                statusText.text = "ขนมเริ่มจับตัวกันแล้ว ใส่ถั่วลิสงคั่วลงไป และกวนต่อจนขนมสุก";
+            }
+
         }
         // จากสเตจ 3 ไป 4: คนต่อจนสุกสุดท้าย
         else if (currentStep == 3 && currentDist >= distToStage4)
@@ -158,7 +173,18 @@ public class PotPaddleController : MonoBehaviour
             currentStep = 4;
             SetBatterStage(3);      // แสดงสเตจ 4 (สุกแล้ว)
             UpdatePaddleVisual(2);  // ไม้พายเปื้อนแป้งสุก
-            Debug.Log("ขนมสุกแล้วจ้า!");
+            if (statusText != null)
+            {
+                statusText.text = "ขนมสุกพร้อมห่อแล้วจ้า!";
+            }
+
+            if (GameDataController.Instance != null)
+            {
+                GameDataController.Instance.PassLevel(provinceIndex);        // ปลดล็อคระดับของจังหวัดนี้ (จ.3)
+                GameDataController.Instance.SaveCurrentScene(nextSceneName); // จำด่านต่อไป
+                GameDataController.Instance.SaveGame();                      // บันทึกการเปลี่ยนแปลงลงเครื่อง
+                Debug.Log("✅ บันทึกข้อมูลผ่านด่านทำอาหารจังหวัด 3 เรียบร้อย!");
+            }
             if (outroPanel != null) outroPanel.SetActive(true);
 
             // 2. ไม้พายหายตัวไป (ปิดตัวเอง)
@@ -184,6 +210,13 @@ public class PotPaddleController : MonoBehaviour
             SetBatterStage(2);      // แสดงสเตจ 3 (มีถั่วแปะ)
             beanBowl.SetActive(false);
             Debug.Log("ใส่ถั่วแล้ว คนต่อให้สุกนะ!");
+
+            if (TestGameManager.Instance != null) TestGameManager.Instance.RecordSuccess();
+        }
+        else
+        {
+            // ถ้าผู้เล่นกดถั่วเล่นๆ ทั้งที่ยังไม่ถึงเวลาโดนหักคะแนน
+            if (TestGameManager.Instance != null) TestGameManager.Instance.RecordMistake();
         }
     }
 

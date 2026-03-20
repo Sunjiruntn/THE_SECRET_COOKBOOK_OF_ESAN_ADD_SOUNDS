@@ -248,8 +248,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 32
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -1177,7 +1177,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 8
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -1314,7 +1314,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 8
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -1506,8 +1506,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 376, y: 285}
-  m_SizeDelta: {x: 120, y: 120}
+  m_AnchoredPosition: {x: 374, y: 285}
+  m_SizeDelta: {x: 70, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2139931661512457641
 CanvasRenderer:
@@ -1838,6 +1838,8 @@ MonoBehaviour:
   headerTips: {fileID: 8472122112605375202}
   recipeList:
   - {fileID: 11400000, guid: 0b60ba5d9b400d94f97d80ded1323998, type: 2}
+  - {fileID: 11400000, guid: 4163c08b55fd32a4abc80ffcf4523465, type: 2}
+  - {fileID: 11400000, guid: b0230118e368d284e972a43e98e78077, type: 2}
   - {fileID: 11400000, guid: f0f19f9efa237b14e866ef836419f1d4, type: 2}
   - {fileID: 11400000, guid: 942ed19e74983764c8d8863607168ca2, type: 2}
   textPopupBlocker: {fileID: 5933253177388211200}
@@ -2882,7 +2884,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 8
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -3137,8 +3139,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 797, y: 411}
-  m_SizeDelta: {x: 150, y: 150}
+  m_AnchoredPosition: {x: 843, y: 437}
+  m_SizeDelta: {x: 90, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1441692199844319323
 CanvasRenderer:

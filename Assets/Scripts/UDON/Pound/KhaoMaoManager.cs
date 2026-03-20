@@ -1,52 +1,60 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Video; 
+using UnityEngine.Video;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class KhaoMaoManager : MonoBehaviour
 {
     [Header("--- Cutscene Settings ---")]
     [Tooltip("ลาก Object Video Player ที่เตรียมวิดีโอจบเกมไว้มาใส่ตรงนี้")]
-    public VideoPlayer cutscenePlayer;   
+    public VideoPlayer cutscenePlayer;
 
     [Header("--- Animator & Objects ---")]
     [Tooltip("ลาก Object สากที่มี Animator มาใส่")]
-    public Animator pestleAnimator;      
+    public Animator pestleAnimator;
     [Tooltip("ลากกลุ่ม UI (เกจ, แถบเขียว, ตัวชี้) มาใส่เพื่อสั่งเปิด/ปิด")]
-    public GameObject skillCheckGroup;   
+    public GameObject skillCheckGroup;
 
     [Header("--- UI Skill Check Elements ---")]
-    public RectTransform indicator;      
-    public RectTransform greenZone;      
-    public Image feedbackOverlay;        // Image เต็มจอสำหรับทำสีวาบ (Alpha 0)
+    public RectTransform indicator;
+    public RectTransform greenZone;
+    public Image feedbackOverlay;         // Image เต็มจอสำหรับทำสีวาบ (Alpha 0)
 
     [Header("--- Rice Display & Sprites ---")]
-    public Image miniRiceDisplay;        
-    public Sprite[] progressSprites;     // ภาพข้าว 5 ระยะ (มุมจอ)
-    public SpriteRenderer mortarRiceRenderer; 
-    public Sprite[] mortarRiceSprites;   // ภาพข้าว 5 ระยะ (ในครก)
-    public Transform riceTransform;      // สำหรับทำ Effect ยืดหด
+    public Image miniRiceDisplay;
+    public Sprite[] progressSprites;      // ภาพข้าว 5 ระยะ (มุมจอ)
+    public SpriteRenderer mortarRiceRenderer;
+    public Sprite[] mortarRiceSprites;    // ภาพข้าว 5 ระยะ (ในครก)
+    public Transform riceTransform;       // สำหรับทำ Effect ยืดหด
 
     [Header("--- Game Settings ---")]
-    public float moveSpeed = 400f;       // ความเร็วเริ่มต้น
-    public float speedIncrement = 50f;   // ความเร็วที่จะเพิ่มขึ้นในแต่ละเซต
-    public float gaugeLimit = 150f;      
-    public float appearanceInterval = 3f; 
-    public Color perfectColor = new Color(0, 1, 0, 0.3f); 
-    public Color missColor = new Color(1, 0, 0, 0.3f);    
+    public float moveSpeed = 400f;        // ความเร็วเริ่มต้น
+    public float speedIncrement = 50f;    // ความเร็วที่จะเพิ่มขึ้นในแต่ละเซต
+    public float gaugeLimit = 150f;
+    public float appearanceInterval = 3f;
+    public Color perfectColor = new Color(0, 1, 0, 0.3f);
+    public Color missColor = new Color(1, 0, 0, 0.3f);
 
     [Header("--- New Tutorial & Audio Settings ---")]
-    public GameObject tutorialTextUI;    // UI Text แนะนำ (แสดง 5 วินาทีแรก)
-    public AudioSource voiceSource;      // สำหรับเสียงแนะนำด่านและเสียงตำ (SFX)
-    public AudioSource musicSource;      // สำหรับเพลง BGM (Loop)
-    public AudioClip introVoiceClip;     // ไฟล์เสียงยายแนะนำด่าน
-    public AudioClip poundSoundClip;     // ไฟล์เสียงตอนตำข้าว (Spacebar)
-    public AudioClip backgroundMusic;    // ไฟล์เพลงประกอบด่าน
+    public GameObject tutorialTextUI;     // UI Text แนะนำ (แสดง 5 วินาทีแรก)
+    public AudioSource voiceSource;       // สำหรับเสียงแนะนำด่านและเสียงตำ (SFX)
+    public AudioSource musicSource;       // สำหรับเพลง BGM (Loop)
+    public AudioClip introVoiceClip;      // ไฟล์เสียงยายนแนะนำด่าน
+    public AudioClip poundSoundClip;      // ไฟล์เสียงตอนตำข้าว (Spacebar)
+    public AudioClip backgroundMusic;     // ไฟล์เพลงประกอบด่าน
 
+    [Header("--- Success Panel Settings ---")]
+    public GameObject successPanel;           // UI แสดงความยินดี
+    public Button successNextButton;          // ปุ่มถัดไป
+    public string nextSceneName = "MiniGame1Mukda";  // ซีนถัดไป
+
+    [Header("--- Save System Settings ---")]
+    public int provinceIndex = 0;
     private bool movingRight = true;
     private bool canHit = false;
-    private int hitCounter = 0;          
-    private int currentSet = 0;          
+    private int hitCounter = 0;
+    private int currentSet = 0;
     private bool isGameOver = true;      // ล็อคไว้จนกว่า Tutorial จะจบ
 
     void Start()
@@ -55,16 +63,24 @@ public class KhaoMaoManager : MonoBehaviour
         if (skillCheckGroup != null) skillCheckGroup.SetActive(false);
         if (feedbackOverlay != null) feedbackOverlay.color = new Color(0, 0, 0, 0);
         if (cutscenePlayer != null) cutscenePlayer.gameObject.SetActive(false);
-        
-        UpdateVisuals(); 
-        
+
+        UpdateVisuals();
+
         // เริ่มลำดับการเข้าด่าน (Tutorial -> Voice -> Music -> Game)
         StartCoroutine(StartSequenceRoutine());
+
+        if (successPanel != null)
+            successPanel.SetActive(false);
+
+        if (successNextButton != null)
+            successNextButton.onClick.AddListener(OnSuccessNextButtonClicked);
+
+        if (cutscenePlayer != null)
+            cutscenePlayer.loopPointReached += OnCutsceneFinished;
     }
 
     IEnumerator StartSequenceRoutine()
     {
-        // 1. แสดง Text แนะนำ 5 วินาที
         if (tutorialTextUI != null)
         {
             tutorialTextUI.SetActive(true);
@@ -72,15 +88,12 @@ public class KhaoMaoManager : MonoBehaviour
             tutorialTextUI.SetActive(false);
         }
 
-        // 2. เล่นเสียงแนะนำด่าน (เสียงยาย)
         if (voiceSource != null && introVoiceClip != null)
         {
             voiceSource.PlayOneShot(introVoiceClip);
-            // รอจนกว่าเสียงแนะนำจะจบลง
             yield return new WaitForSeconds(introVoiceClip.length);
         }
 
-        // 3. เริ่มเล่นเพลง BGM หลังจากเสียงแนะนำจบ
         if (musicSource != null && backgroundMusic != null)
         {
             musicSource.clip = backgroundMusic;
@@ -88,9 +101,8 @@ public class KhaoMaoManager : MonoBehaviour
             musicSource.Play();
         }
 
-        // 4. ปลดล็อกเกมและเริ่มลูปการเล่น
         isGameOver = false;
-        StartCoroutine(SkillCheckRoutine()); 
+        StartCoroutine(SkillCheckRoutine());
     }
 
     void Update()
@@ -101,7 +113,6 @@ public class KhaoMaoManager : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                // เล่นเสียงตำข้าวทุกครั้งที่กด Spacebar
                 if (voiceSource != null && poundSoundClip != null)
                 {
                     voiceSource.PlayOneShot(poundSoundClip);
@@ -125,7 +136,6 @@ public class KhaoMaoManager : MonoBehaviour
 
     IEnumerator SkillCheckRoutine()
     {
-        // เล่นจนกว่าจะครบ 5 เซต
         while (currentSet < 5)
         {
             yield return new WaitForSeconds(appearanceInterval);
@@ -148,7 +158,6 @@ public class KhaoMaoManager : MonoBehaviour
             canHit = false;
         }
 
-        // เมื่อครบ 5 เซต ให้จบเกมและเล่นวิดีโอ
         FinishGame();
     }
 
@@ -165,20 +174,20 @@ public class KhaoMaoManager : MonoBehaviour
         if (distance <= zoneHalfWidth)
         {
             hitCounter++;
-            StartCoroutine(FlashScreen(perfectColor)); 
-            StartCoroutine(SquashAndStretchEffect());  
-            
+            StartCoroutine(FlashScreen(perfectColor));
+            StartCoroutine(SquashAndStretchEffect());
+
             if (hitCounter >= 3)
             {
                 currentSet++;
                 hitCounter = 0;
-                UpdateVisuals(); 
+                UpdateVisuals();
             }
         }
         else
         {
             hitCounter = 0;
-            StartCoroutine(FlashScreen(missColor)); 
+            StartCoroutine(FlashScreen(missColor));
         }
 
         canHit = false;
@@ -188,14 +197,13 @@ public class KhaoMaoManager : MonoBehaviour
     void UpdateVisuals()
     {
         int index = Mathf.Clamp(currentSet, 0, 4);
-        
+
         if (miniRiceDisplay != null && progressSprites.Length > index)
             miniRiceDisplay.sprite = progressSprites[index];
 
         if (mortarRiceRenderer != null && mortarRiceSprites.Length > index)
             mortarRiceRenderer.sprite = mortarRiceSprites[index];
 
-        // เพิ่มความเร็วเมื่อขึ้นเซตใหม่
         if (currentSet > 0 && currentSet < 5)
         {
             moveSpeed += speedIncrement;
@@ -208,8 +216,16 @@ public class KhaoMaoManager : MonoBehaviour
         canHit = false;
         skillCheckGroup.SetActive(false);
 
-        // หยุดเพลงเมื่อจบเกมเพื่อเตรียมเล่นเสียงวิดีโอ
-        if (musicSource != null) musicSource.Stop();
+        // หยุดเสียงเพลงและเสียงพากย์ทันทีเมื่อจบเกม (ก่อนเล่น Cutscene)
+        StopAllSounds();
+
+        if (GameDataController.Instance != null)
+        {
+            GameDataController.Instance.PassLevel(provinceIndex);
+            GameDataController.Instance.SaveCurrentScene(nextSceneName);
+            GameDataController.Instance.SaveGame();
+            Debug.Log("✅ บันทึกข้อมูลผ่านด่านข้าวเม่าเรียบร้อย!");
+        }
 
         if (cutscenePlayer != null)
         {
@@ -246,5 +262,29 @@ public class KhaoMaoManager : MonoBehaviour
         riceTransform.localScale = new Vector3(1.3f, 0.7f, 1f);
         yield return new WaitForSeconds(0.1f);
         riceTransform.localScale = originalScale;
+    }
+
+    // ฟังก์ชันสำหรับหยุดเสียงทั้งหมดใน Script นี้
+    private void StopAllSounds()
+    {
+        if (musicSource != null) musicSource.Stop();
+        if (voiceSource != null) voiceSource.Stop();
+    }
+
+    void OnCutsceneFinished(VideoPlayer vp)
+    {
+        if (successPanel != null)
+            successPanel.SetActive(true);
+    }
+
+    public void OnSuccessNextButtonClicked()
+    {
+        // สั่งหยุดเสียงอีกครั้งเพื่อความชัวร์ก่อนเปลี่ยนซีน
+        StopAllSounds();
+        
+        // ถ้า Cutscene ยังเล่นอยู่ (กรณีผู้เล่นกดข้ามหรือมีเสียงจาก Video) ให้หยุดด้วย
+        if (cutscenePlayer != null) cutscenePlayer.Stop();
+
+        SceneManager.LoadScene("MiniGame1Mukda");
     }
 }

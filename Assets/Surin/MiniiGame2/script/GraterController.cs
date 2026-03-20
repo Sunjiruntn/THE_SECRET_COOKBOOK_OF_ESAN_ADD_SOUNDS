@@ -3,19 +3,19 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using System.Collections; // ✅ เพิ่มเพื่อใช้ Coroutine
+using System.Collections; 
 
 [System.Serializable]
 public class GraterController : MonoBehaviour
 {
     // ==========================================
-    // [แทรกใหม่] Audio System - ลากใส่ใน Inspector
+    // Audio System
     // ==========================================
     [Header("--- Audio Settings ---")]
     public AudioSource bgmSource;
     public AudioSource sfxSource;
     public AudioSource voiceSource;
-    public AudioSource grateSource; // สำหรับเสียงขูด (ติ๊ก Loop ใน Inspector)
+    public AudioSource grateSource; 
 
     public AudioClip bgmClip;
     public AudioClip clickSfx;
@@ -24,11 +24,11 @@ public class GraterController : MonoBehaviour
     public AudioClip grateSfx;
     // ==========================================
 
-    [Header("--- Win System & Level Settings (เพิ่มใหม่) ---")]
+    [Header("--- Win System & Level Settings ---")]
     public GameObject winPanel;
     public Button nextLevelButton;
     public string nextSceneName = "MiniGame3Surin";
-    public int provinceIndex = 2;
+    public int provinceIndex = 4;
 
     [Header("UI Status")]
     public TextMeshProUGUI statusText;
@@ -149,12 +149,12 @@ public class GraterController : MonoBehaviour
     void StartDialogueSequence()
     {
         currentDialogueQueue.Clear();
-        AudioClip selectedVoice = null; // ไว้เก็บเสียงที่จะเล่น
+        AudioClip selectedVoice = null;
 
         if (isRetryRound)
         {
             currentDialogueQueue.Add(retrySentence);
-            selectedVoice = retryVoice; // เลือกเสียงพากย์ Retry
+            selectedVoice = retryVoice;
         }
         else
         {
@@ -162,10 +162,9 @@ public class GraterController : MonoBehaviour
             {
                 currentDialogueQueue.Add(sentence);
             }
-            selectedVoice = introVoice; // เลือกเสียงพากย์ Intro
+            selectedVoice = introVoice;
         }
 
-        // [แทรก] เล่นเสียงพากย์และรอเปิด BGM เมื่อเสียงจบ
         if (voiceSource != null && selectedVoice != null)
         {
             voiceSource.clip = selectedVoice;
@@ -186,11 +185,14 @@ public class GraterController : MonoBehaviour
         }
     }
 
-    // [แทรก] Coroutine รอเสียงพากย์จบ
     IEnumerator WaitAndPlayBGM(float delay)
     {
         yield return new WaitForSeconds(delay);
-        PlayBGM();
+        // ตรวจสอบก่อนเล่น BGM ว่าเกมจบหรือยัง (ป้องกันเสียงเล่นตอนเปลี่ยนด่าน)
+        if (!isGameFinished && !isGameFailed)
+        {
+            PlayBGM();
+        }
     }
 
     void PlayBGM()
@@ -201,6 +203,16 @@ public class GraterController : MonoBehaviour
             bgmSource.loop = true;
             bgmSource.Play();
         }
+    }
+
+    // ฟังก์ชันใหม่: ใช้หยุดเสียงทั้งหมดใน Script นี้
+    void StopAllSounds()
+    {
+        StopAllCoroutines(); // หยุดรอเล่น BGM
+        if (bgmSource != null) bgmSource.Stop();
+        if (sfxSource != null) sfxSource.Stop();
+        if (voiceSource != null) voiceSource.Stop();
+        if (grateSource != null) grateSource.Stop();
     }
 
     void ShowNextSentence()
@@ -230,7 +242,6 @@ public class GraterController : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                // [แทรก] เสียงคลิกตอนเปลี่ยนบทพูด
                 if (sfxSource != null && clickSfx != null) sfxSource.PlayOneShot(clickSfx);
                 ShowNextSentence();
             }
@@ -239,7 +250,6 @@ public class GraterController : MonoBehaviour
 
         if (isGameFinished || isGameFailed) 
         {
-            // [แทรก] หยุดเสียงขูดถ้าเกมจบ
             if (grateSource != null && grateSource.isPlaying) grateSource.Stop();
             return;
         }
@@ -255,7 +265,6 @@ public class GraterController : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                // [แทรก] เสียงคลิกปิด Warning
                 if (sfxSource != null && clickSfx != null) sfxSource.PlayOneShot(clickSfx);
                 isPausedByWarning = false;
                 if (warningMessageObject != null) warningMessageObject.SetActive(false);
@@ -293,7 +302,6 @@ public class GraterController : MonoBehaviour
                 CheckProgression();
                 UpdateTrayFlakes();
 
-                // [แทรก] เล่นเสียงขูดมะพร้าว
                 if (grateSource != null && !grateSource.isPlaying && grateSfx != null)
                 {
                     grateSource.clip = grateSfx;
@@ -302,7 +310,6 @@ public class GraterController : MonoBehaviour
             }
             else 
             {
-                // [แทรก] หยุดเสียงขูดถ้าไม่ได้ขูดจริง
                 if (grateSource != null && grateSource.isPlaying) grateSource.Stop();
             }
 
@@ -313,7 +320,6 @@ public class GraterController : MonoBehaviour
             ResetBladeVisuals();
             wasTooRoughLastFrame = false;
             verticalSpeed = 0f;
-            // [แทรก] หยุดเสียงขูดเมื่อปล่อยมือ
             if (grateSource != null && grateSource.isPlaying) grateSource.Stop();
         }
 
@@ -345,7 +351,7 @@ public class GraterController : MonoBehaviour
 
     public void RestartGame()
     {
-        // [แทรก] เสียงคลิกก่อน Restart
+        StopAllSounds(); // หยุดเสียงก่อนเริ่มใหม่
         if (sfxSource != null && clickSfx != null) sfxSource.PlayOneShot(clickSfx);
         isRetryRound = true;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -376,6 +382,7 @@ public class GraterController : MonoBehaviour
     {
         isGameFailed = true;
         isDragging = false;
+        StopAllSounds(); // หยุด BGM/เสียงขูด เมื่อแพ้
         if (failPopupPanel != null)
         {
             failPopupPanel.SetActive(true);
@@ -387,7 +394,7 @@ public class GraterController : MonoBehaviour
 
     void GameFinishedSuccess()
     {
-        Debug.Log("🎉 ขูดมะพร้าวครบแล้ว! เย้!");
+        StopAllSounds(); // หยุด BGM/เสียงขูด เมื่อชนะ
         if (winPanel != null) winPanel.SetActive(true);
         if (speedBarWholeObject != null) speedBarWholeObject.SetActive(false);
         if (handTransform != null) handTransform.gameObject.SetActive(false);
@@ -401,10 +408,15 @@ public class GraterController : MonoBehaviour
 
     public void GoToNextLevel()
     {
-        // [แทรก] เสียงคลิกตอนไปด่านถัดไป
-        if (sfxSource != null && clickSfx != null) sfxSource.PlayOneShot(clickSfx);
+        StopAllSounds(); // หยุดเสียงทั้งหมดก่อนโหลด Scene ใหม่
         Debug.Log("กดปุ่มแล้ว");
         SceneManager.LoadScene(nextSceneName);
+    }
+
+    // หยุดเสียงเมื่อ Object นี้ถูกทำลาย (เช่น ตอนเปลี่ยนด่าน)
+    private void OnDestroy()
+    {
+        StopAllSounds();
     }
 
     void CheckProgression()

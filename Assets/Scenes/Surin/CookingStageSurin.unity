@@ -362,7 +362,7 @@ MonoBehaviour:
   winPanel: {fileID: 1472381603}
   backToMapButton: {fileID: 1812402232}
   nextSceneName: MapSelect
-  provinceIndex: 2
+  provinceIndex: 4
   clickableLidOnTable: {fileID: 1364416214}
   instructionText: {fileID: 432535573}
   bowl: {fileID: 1789214968}
@@ -3481,7 +3481,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 7, y: 61}
+  m_AnchoredPosition: {x: -79, y: 48}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1767139458
@@ -3504,7 +3504,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u0E22\u0E34\u0E19\u0E14\u0E35\u0E14\u0E49\u0E27\u0E22\u0E04\u0E38\u0E13\u0E17\u0E33\u0E02\u0E19\u0E21\u0E19\u0E21\u0E40\u0E19\u0E35\u0E22\u0E25\u0E44\u0E14\u0E49\u0E2A\u0E33\u0E40\u0E23\u0E47\u0E08"
+  m_text: "\u0E22\u0E34\u0E19\u0E14\u0E35\u0E14\u0E49\u0E27\u0E22\u0E04\u0E38\u0E13\u0E17\u0E33\u0E02\u0E19\u0E21\u0E19\u0E21\u0E40\u0E19\u0E35\u0E22\u0E25\u0E2D\u0E2D\u0E01\u0E21\u0E32\u0E44\u0E14\u0E49\u0E2A\u0E35\u0E19\u0E4D\u0E49\u0E32\u0E15\u0E32\u0E25\u0E2D\u0E48\u0E2D\u0E19
+    \u0E2B\u0E2D\u0E21\u0E01\u0E25\u0E34\u0E48\u0E19\u0E21\u0E30\u0E1E\u0E23\u0E49\u0E32\u0E27
+    \u0E01\u0E14\u0E1B\u0E38\u0E48\u0E21\u0E40\u0E1E\u0E37\u0E48\u0E2D\u0E01\u0E25\u0E31\u0E1A\u0E44\u0E1B\u0E40\u0E23\u0E34\u0E48\u0E21\u0E40\u0E25\u0E48\u0E19\u0E14\u0E48\u0E32\u0E19\u0E2A\u0E38\u0E14\u0E17\u0E49\u0E32\u0E22"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 222d44f6c65f2214e980323d5862ec7c, type: 2}
   m_sharedMaterial: {fileID: 8143025967548739637, guid: 222d44f6c65f2214e980323d5862ec7c, type: 2}
@@ -3569,7 +3571,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -349.4138, y: 0, z: -386.72995, w: -118.73281}
+  m_margin: {x: -349.4138, y: 3.1742153, z: -511.53946, w: -118.73281}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -4618,11 +4620,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1719169225829347075, guid: 7fb9e83faa270b548a8ab1ab90f69dc7, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 568
+      value: 747
       objectReference: {fileID: 0}
     - target: {fileID: 1719169225829347075, guid: 7fb9e83faa270b548a8ab1ab90f69dc7, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 411
+      value: 458
       objectReference: {fileID: 0}
     - target: {fileID: 4358412771107174708, guid: 7fb9e83faa270b548a8ab1ab90f69dc7, type: 3}
       propertyPath: m_Name
@@ -5024,6 +5026,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1166672739}
     m_Modifications:
+    - target: {fileID: 8778555240604314, guid: 4cf64738bd380d946a86cdecc39c128d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 469
+      objectReference: {fileID: 0}
     - target: {fileID: 386060722727159208, guid: 4cf64738bd380d946a86cdecc39c128d, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

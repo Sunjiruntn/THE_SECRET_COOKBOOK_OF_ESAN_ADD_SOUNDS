@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
+using UnityEngine.Video;
 public class MainMenuManager : MonoBehaviour
 {
     [Header("Settings")]
-    public string mapSceneName = "MapSelect"; 
+    public string mapSceneName = "MapSelect";
 
     [Header("UI References")]
     public Button continueButton;
@@ -15,6 +15,9 @@ public class MainMenuManager : MonoBehaviour
     public AudioSource sfxSource;       // ลาก AudioSource สำหรับเสียงเอฟเฟคมาวาง
     public AudioClip buttonClickSound;  // ลากไฟล์เสียงคลิกมาใส่
 
+    [Header("Cutscene Settings")]
+    public GameObject cutscenePanel;
+    public VideoPlayer videoPlayer;
     void Start()
     {
         // เล่นเพลงพื้นหลังทันทีที่เริ่ม (ถ้ายังไม่ได้กด Play On Awake ใน Inspector)
@@ -34,8 +37,18 @@ public class MainMenuManager : MonoBehaviour
             }
             else
             {
-                continueButton.interactable = true; 
+                continueButton.interactable = true;
             }
+        }
+        if (cutscenePanel != null)
+        {
+            cutscenePanel.SetActive(false);
+        }
+
+        // ✅ 4. ดักจับว่า "ถ้าวิดีโอเล่นจบแล้ว ให้ทำฟังก์ชัน OnVideoEnd นะ"
+        if (videoPlayer != null)
+        {
+            videoPlayer.loopPointReached += OnVideoEnd;
         }
     }
 
@@ -50,15 +63,19 @@ public class MainMenuManager : MonoBehaviour
             GameDataController.Instance.SaveCurrentScene(mapSceneName);
         }
 
-        SceneManager.LoadScene(mapSceneName);
+        //SceneManager.LoadScene(mapSceneName);
+
+        PlayCutscene();
     }
 
     // ✅ ปุ่ม CONTINUE (เล่นต่อ)
     public void OnClickContinue()
     {
         PlayClickSound(); // เล่นเสียงกดปุ่ม
-        
-        SceneManager.LoadScene(mapSceneName);
+
+        //SceneManager.LoadScene(mapSceneName);
+
+        PlayCutscene();
     }
 
     public void OnClickExit()
@@ -67,6 +84,7 @@ public class MainMenuManager : MonoBehaviour
         Application.Quit();
     }
 
+
     // ฟังก์ชันช่วยเล่นเสียงคลิก
     private void PlayClickSound()
     {
@@ -74,5 +92,39 @@ public class MainMenuManager : MonoBehaviour
         {
             sfxSource.PlayOneShot(buttonClickSound);
         }
+    }
+    private void PlayCutscene()
+    {
+        // 1. หยุดเพลงหน้าเมนู เสียงจะได้ไม่ตีกับเสียงในวิดีโอ
+        if (backgroundMusic != null)
+        {
+            backgroundMusic.Stop();
+        }
+
+        // 2. เปิดหน้าจอวิดีโอ และสั่งเล่น
+        if (cutscenePanel != null && videoPlayer != null)
+        {
+            cutscenePanel.SetActive(true);
+            videoPlayer.Play();
+        }
+        else
+        {
+            // กันเหนียว: ถ้าลืมใส่ไฟล์วิดีโอ ให้ข้ามไปโหลดด่านเลย เกมจะได้ไม่ค้าง
+            SceneManager.LoadScene(mapSceneName);
+        }
+    }
+
+    // ฟังก์ชันนี้จะทำงานอัตโนมัติเมื่อวิดีโอเล่นจบเฟรมสุดท้าย
+    private void OnVideoEnd(VideoPlayer vp)
+    {
+        // โหลดเข้าฉาก MapSelect ได้เลย!
+        SceneManager.LoadScene(mapSceneName);
+    }
+
+    // (แถม) เอาไว้ใช้สร้างปุ่ม "ข้าม (Skip)" ให้ผู้เล่นกด
+    public void SkipCutscene()
+    {
+        if (videoPlayer != null) videoPlayer.Stop();
+        SceneManager.LoadScene(mapSceneName);
     }
 }

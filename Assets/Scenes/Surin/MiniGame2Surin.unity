@@ -252,7 +252,7 @@ MonoBehaviour:
   winPanel: {fileID: 1634677255}
   nextLevelButton: {fileID: 1115112377}
   nextSceneName: MiniGame3Surin
-  provinceIndex: 2
+  provinceIndex: 4
   statusText: {fileID: 0}
   circularProgressImage: {fileID: 1421350793}
   speedBarImage: {fileID: 273705988}

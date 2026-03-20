@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using System.Collections; // ✅ เพิ่มเพื่อใช้ Coroutine
+using System.Collections;
 
 [System.Serializable] public class CoconutStage { public string name; public Sprite coconutSprite; [Range(0, 100)] public float showAtPercent; }
 [System.Serializable] public class FlakeStage { public string name; public GameObject flakeObject; [Range(0, 100)] public float appearAtPercent; }
@@ -11,28 +11,27 @@ using System.Collections; // ✅ เพิ่มเพื่อใช้ Corouti
 public class CatHandController : MonoBehaviour
 {
     // ==========================================
-    // [แทรกใหม่] Audio System Settings
+    // Audio System Settings
     // ==========================================
-    [Header("--- Audio Settings (เพิ่มใหม่) ---")]
-    public AudioSource bgmSource;        // สำหรับเพลงพื้นหลัง
-    public AudioSource sfxSource;        // สำหรับเสียงปุ่ม/คลิก
-    public AudioSource voiceSource;      // สำหรับเสียงพากย์แนะนำ
-    public AudioSource grateSource;      // สำหรับเสียงขูด (ติ๊ก Loop ใน Inspector)
+    [Header("--- Audio Settings ---")]
+    public AudioSource bgmSource;        
+    public AudioSource sfxSource;        
+    public AudioSource voiceSource;      
+    public AudioSource grateSource;      
 
     public AudioClip bgmClip;            
     public AudioClip clickSfx;           
     public AudioClip introVoice;         
     public AudioClip retryVoice;         
     public AudioClip grateSfx;           
-    // ==========================================
 
-    [Header("--- Win System & Level Settings (เพิ่มใหม่) ---")]
+    [Header("--- Win System & Level Settings ---")]
     public GameObject winPanel;
     public Button nextLevelButton;
     public string nextSceneName = "CookingStageSurin";
-    public int provinceIndex = 2;
+    public int provinceIndex = 4;
 
-    [Header("--- Dialogue System (ระบบบทพูด) ---")]
+    [Header("--- Dialogue System ---")]
     public GameObject dialoguePanel; 
     public TextMeshProUGUI dialogueText; 
 
@@ -46,7 +45,7 @@ public class CatHandController : MonoBehaviour
     private Queue<string> sentencesQueue = new Queue<string>();
     private bool isDialogueActive = false;
 
-    [Header("--- Visual Effects (ลากใส่ใหม่ด้วยนะ!) ---")]
+    [Header("--- Visual Effects ---")]
     public ParticleSystem whiteFlakesPS;
     public ParticleSystem brownFlakesPS;
 
@@ -115,12 +114,12 @@ public class CatHandController : MonoBehaviour
     void StartDialogueSequence()
     {
         sentencesQueue.Clear();
-        AudioClip selectedVoice = null; // ✅ เพิ่มเพื่อเก็บเสียงที่จะเล่น
+        AudioClip selectedVoice = null;
 
         if (isRetryRound)
         {
             sentencesQueue.Enqueue(retrySentence);
-            selectedVoice = retryVoice; // ✅ เลือกเสียง Retry
+            selectedVoice = retryVoice;
         }
         else
         {
@@ -128,10 +127,9 @@ public class CatHandController : MonoBehaviour
             {
                 sentencesQueue.Enqueue(sentence);
             }
-            selectedVoice = introVoice; // ✅ เลือกเสียง Intro
+            selectedVoice = introVoice;
         }
 
-        // ✅ [แทรก] เล่นเสียงพากย์และรอเริ่ม BGM
         if (voiceSource != null && selectedVoice != null)
         {
             voiceSource.clip = selectedVoice;
@@ -152,11 +150,11 @@ public class CatHandController : MonoBehaviour
         }
     }
 
-    // ✅ [แทรกใหม่] Coroutine รอเสียงพากย์จบแล้วต่อ BGM
     IEnumerator WaitAndPlayBGM(float delay)
     {
         yield return new WaitForSeconds(delay);
-        PlayBGM();
+        // เช็คอีกครั้งว่าเกมยังไม่จบหรือเปลี่ยนด่านไปก่อนเสียงพากย์จบ
+        if (!isGameFinished && !isGameFailed) PlayBGM();
     }
 
     void PlayBGM()
@@ -167,6 +165,16 @@ public class CatHandController : MonoBehaviour
             bgmSource.loop = true;
             bgmSource.Play();
         }
+    }
+
+    // ฟังก์ชันใหม่สำหรับหยุดเสียงทั้งหมดแบบเด็ดขาด
+    void StopAllSounds()
+    {
+        if (bgmSource != null) bgmSource.Stop();
+        if (sfxSource != null) sfxSource.Stop();
+        if (voiceSource != null) voiceSource.Stop();
+        if (grateSource != null) grateSource.Stop();
+        StopAllCoroutines(); // หยุดการรอเล่น BGM ด้วย
     }
 
     public void DisplayNextSentence()
@@ -193,7 +201,6 @@ public class CatHandController : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                // ✅ [แทรก] เสียงคลิกตอนคุย
                 if (sfxSource != null && clickSfx != null) sfxSource.PlayOneShot(clickSfx);
                 DisplayNextSentence();
             }
@@ -204,7 +211,6 @@ public class CatHandController : MonoBehaviour
         {
             ForceStopParticle(whiteFlakesPS);
             ForceStopParticle(brownFlakesPS);
-            // ✅ [แทรก] หยุดเสียงขูดถ้าเกมจบ
             if (grateSource != null && grateSource.isPlaying) grateSource.Stop();
             return;
         }
@@ -241,7 +247,6 @@ public class CatHandController : MonoBehaviour
                 UpdateCoconutVisuals();
                 UpdateTrayFlakes();
 
-                // ✅ [แทรก] เล่นเสียงขูดมะพร้าว
                 if (grateSource != null && !grateSource.isPlaying && grateSfx != null)
                 {
                     grateSource.clip = grateSfx;
@@ -250,7 +255,6 @@ public class CatHandController : MonoBehaviour
             }
             else
             {
-                // ✅ [แทรก] หยุดเสียงขูดถ้าไม่ได้ขูดจริง (หรือขูดแรงไป)
                 if (grateSource != null && grateSource.isPlaying) grateSource.Stop();
             }
             CheckPenaltyLogic();
@@ -262,7 +266,6 @@ public class CatHandController : MonoBehaviour
             isTooRough = false;
             wasTooRoughLastFrame = false;
 
-            // ✅ [แทรก] หยุดเสียงขูดเมื่อปล่อยมือ
             if (grateSource != null && grateSource.isPlaying) grateSource.Stop();
         }
 
@@ -272,23 +275,18 @@ public class CatHandController : MonoBehaviour
 
     public void RestartGame()
     {
-        // ✅ [แทรก] เสียงปุ่มตอน Restart
-        if (sfxSource != null && clickSfx != null) sfxSource.PlayOneShot(clickSfx);
+        StopAllSounds(); // หยุดเสียงก่อนโหลด Scene ใหม่
         isRetryRound = true;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     void GameFinishedSuccess()
     {
-        Debug.Log("🎉 ภารกิจสำเร็จ! ขูดมะพร้าวเสร็จแล้ว");
         if (winPanel != null) winPanel.SetActive(true);
         if (tensionBarWholeObject != null) tensionBarWholeObject.SetActive(false);
         if (handTransform != null) handTransform.gameObject.SetActive(false);
         if (statusText != null) statusText.text = "";
-        if (whiteFlakesPS != null) whiteFlakesPS.gameObject.SetActive(false);
-        if (brownFlakesPS != null) brownFlakesPS.gameObject.SetActive(false);
         
-        // ✅ [แทรก] หยุดเสียงขูดเมื่อชนะ
         if (grateSource != null) grateSource.Stop();
 
         if (GameDataController.Instance != null)
@@ -306,9 +304,14 @@ public class CatHandController : MonoBehaviour
 
     public void GoToNextLevel()
     {
-        // ✅ [แทรก] เสียงปุ่มตอนไปด่านต่อไป
-        if (sfxSource != null && clickSfx != null) sfxSource.PlayOneShot(clickSfx);
+        StopAllSounds(); // หยุดเสียงก่อนไปด่านถัดไป
         SceneManager.LoadScene(nextSceneName);
+    }
+
+    // ทำงานเมื่อ Object ถูกทำลาย (เช่นตอนเปลี่ยน Scene)
+    private void OnDestroy()
+    {
+        StopAllSounds();
     }
 
     void HandleGratingFX()
@@ -400,8 +403,6 @@ public class CatHandController : MonoBehaviour
         isDragging = false;
         if (failPopupPanel) failPopupPanel.SetActive(true);
         if (restartButtonObject) restartButtonObject.SetActive(true);
-        
-        // ✅ [แทรก] หยุดเสียงขูดเมื่อแพ้
         if (grateSource != null) grateSource.Stop();
     }
 

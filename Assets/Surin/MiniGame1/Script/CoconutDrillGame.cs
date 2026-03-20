@@ -8,7 +8,7 @@ using System.Collections; // ✅ เพิ่มเพื่อใช้ Corouti
 public class CoconutDrillGame : MonoBehaviour
 {
     [Header("Level Settings")]
-    public int provinceIndex = 2; 
+    public int provinceIndex = 4; 
     public string nextSceneName = "MiniGame2Surin";
 
     // ==========================================
@@ -88,6 +88,23 @@ public class CoconutDrillGame : MonoBehaviour
     private GameObject currentHoleRim;
     private GameObject currentHoleCrack;
     private float redZoneTimer = 0f;
+
+    // ==========================================
+    // [แก้ไขเพิ่มเติม] หยุดเสียงทั้งหมดเมื่อเปลี่ยนฉาก
+    // ==========================================
+    private void OnDestroy()
+    {
+        StopAllSounds();
+    }
+
+    private void StopAllSounds()
+    {
+        if (bgmSource != null) bgmSource.Stop();
+        if (sfxSource != null) sfxSource.Stop();
+        if (voiceSource != null) voiceSource.Stop();
+        if (drillSource != null) drillSource.Stop();
+    }
+    // ==========================================
 
     void Start()
     {
@@ -406,6 +423,9 @@ public class CoconutDrillGame : MonoBehaviour
     IEnumerator WinGameRoutine()
     {
         yield return new WaitForSeconds(1.5f);
+
+        // [แทรก] หยุดเสียงทั้งหมดก่อนโหลดฉากใหม่
+        StopAllSounds();
 
         if (GameDataController.Instance != null)
         {
